@@ -1,0 +1,31 @@
+{
+  "name": "answerSheet",
+  "description": "the dependencies on answerSheet",
+  "main": "pages/index.html",
+  "keywords": [
+    "answerSheet"
+  ],
+  "authors": [
+    "zl"
+  ],
+  "license": "MIT",
+  "homepage": "localhost:8080/answerSheet",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-route": "^1.5.5",
+    "angular": "^1.5.5",
+    "bootstrap": "^3.3.6",
+    "iCheck": "^1.0.2",
+    "jquery": "^2.2.3",
+    "lodash": "^4.12.0",
+    "jquery-validation": "^1.15.0",
+    "toastr": "^2.1.2"
+  }
+}

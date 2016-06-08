@@ -1,0 +1,42 @@
+/*顶部工具栏样式*/
+.headerPanel {
+  position: relative;
+  text-align: center;
+  border-bottom: 3px solid #c2d5d9;
+  margin-bottom: 8px;
+  .headerLogo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    img {
+      width: 80px;
+      height: 80px;
+    }
+    .logoLabel {
+      font-size: 20pt;
+      font-weight: bold;
+    }
+  }
+  .headerList {
+    display:inline-block;
+    padding:0;
+    margin:0;
+    width: auto;
+
+    .headerItem {
+      transition: transform 0.1s ease-in-out;
+    }
+
+    .headerItem:hover {
+      -webkit-transform: scale(1.05);
+	  -moz-transform: scale(1.05);
+    }
+  }
+  .operatorPanel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+}
+

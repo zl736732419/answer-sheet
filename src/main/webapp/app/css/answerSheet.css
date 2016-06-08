@@ -1,0 +1,11 @@
+/*答题卡样式*/
+.answerSheetPanel {
+  text-align: center;
+}
+.answerSheetPanel .answerSheetSvg {
+  background-color: white;
+}
+.answerSheetPanel .answerSheetSvg .element:hover {
+  cursor: default;
+}
+/*# sourceMappingURL=answerSheet.css.map */
