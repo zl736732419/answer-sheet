@@ -36,6 +36,14 @@
                 titleHeight : 30, //准考证号面板标题高度,
                 inputHeight : 35 //考生填入数据的方格高度
             },
+            subjectPanel : { //科目面板
+                marginLeft: 25,
+                marginTop: 20,
+                lineHeight: 15,
+                titleHeight: 40,
+                padding: 20 //左边距
+
+            },
             components : {
                 select : null, //选中控件
                 drag : null, //拖动控件
@@ -100,6 +108,7 @@
             this.appendSeperatorLine();
             this.appendLeftAttentionNote(params);
             this.drawZkzhPanel();
+            this.drawSubjectPanel();
         },
         /**
          * 绘制左侧注意事项和考生基本信息
@@ -138,6 +147,104 @@
             var y2 = y1 + this.settings.content.height;
             var seperatorLine = $.uiBuilder.drawLine(x1, y1, x1, y2);
             this.settings.g.appendChild(seperatorLine);
+        },
+        //绘制科目面板
+        drawSubjectPanel : function() {
+            var parentG = this.settings.g;
+            var constant = $.answerSheet.settings.constant;
+            var subjectPanel = this.settings.subjectPanel;
+            //右侧内容面板宽度
+            var content = this.settings.content;
+            var zkzhPanel = this.settings.zkzhPanel;
+
+            var width = content.width - this.settings.row.width;
+
+            var zkzhPanelWidth = (width - zkzhPanel.marginLeft*2) * 3 / 4;
+
+            var panelWidth = width - zkzhPanel.marginLeft - zkzhPanelWidth
+                - subjectPanel.marginLeft * 2;
+            var panelHeight = content.height - subjectPanel.marginTop * 2;
+            var g = document.createElementNS(constant.SVN_NS, 'g');
+            $(g).attr('transform', 'translate(0, 0)');
+            parentG.appendChild(g);
+            var x = this.settings.row.width;
+            var y = 0;
+            //绘制科目标题面板
+            $.uiBuilder.drawRectAndCenterText(x, y, panelWidth, subjectPanel.titleHeight,'科目',g);
+            //绘制科目内容面板
+            var contentPanelG = document.createElementNS(constant.SVN_NS, 'g');
+            $(contentPanelG).attr('transform', 'translate(0, 0)');
+            g.appendChild(contentPanelG);
+
+            var panel = $.uiBuilder.drawRect(x, (y+subjectPanel.titleHeight),
+                panelWidth,(panelHeight-subjectPanel.titleHeight));
+            contentPanelG.appendChild(panel);
+
+
+            this.renderSubjects(panelWidth, panelHeight-subjectPanel.titleHeight, contentPanelG);
+
+            var translateStr = 'translate(' + (zkzhPanel.marginLeft+zkzhPanelWidth+subjectPanel.marginLeft) + ','
+                + subjectPanel.marginTop + ')';
+            $(g).attr('transform', translateStr);
+
+        },
+        //根据$.subject渲染科目内容,居中显示
+        renderSubjects : function(panelWidth, panelHeight, parentG) {
+            var constant = $.answerSheet.settings.constant;
+            var g = document.createElementNS(constant.SVN_NS, 'g');
+            $(g).attr('transform', 'translate(0, 0)');
+            parentG.appendChild(g);
+
+            var subjectPanel = this.settings.subjectPanel;
+            var row = this.settings.row;
+            var curSubject = $.answerSheet.settings.subject.value;
+            var grid = this.settings.grid;
+            var subjects = $.subject;
+
+            var index = 0;
+            var name = null;
+            var value = -1;
+            var x = row.width;
+            var y = 0;
+            var text = null;
+            var rect = null;
+            var rectX = 0;
+            var fill = false;
+            var fillColor = '#000';
+            var maxTextWidth = 0;
+            for(key in subjects) {
+                if(key && subjects.hasOwnProperty(key)) {
+                    name = subjects[key].name;
+                    value = subjects[key].value;
+
+                    y = subjectPanel.titleHeight + (15 + subjectPanel.lineHeight) * index; //15为行高
+
+                    text = $.uiBuilder.drawText(x, y, name);
+                    g.appendChild(text);
+                    rectX = x + text.getBBox().width + subjectPanel.padding;
+                    if(text.getBBox().width > maxTextWidth) {
+                        maxTextWidth = text.getBBox().width;
+                    }
+                    if(curSubject == value) {
+                        fill = true;
+                        fillColor = '#000';
+                    }else {
+                        fill = false;
+                    }
+                    rect = $.uiBuilder.drawRect(rectX, (y-15), grid.width, grid.height, fill, fillColor);
+                    g.appendChild(rect);
+
+                    index++;
+                }
+            }
+
+            //将输出的内容居中到面板中央
+            var contentWidth = maxTextWidth + subjectPanel.padding + grid.width;
+            var transX = (panelWidth - contentWidth) / 2;
+            var transY = (panelHeight - (15 + subjectPanel.lineHeight) * index) / 2;
+            var translateStr = 'translate(' + transX + ','
+                + transY + ')';
+            $(g).attr('transform', translateStr);
         },
         //绘制右侧准考证号面板
         drawZkzhPanel : function() {
