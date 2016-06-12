@@ -59,6 +59,7 @@
         },
         /**
          * 停止移动后将g上的transform计算到元素的坐标中，translate值重新设置为0,0
+         * @Deprecated
          */
         updateElementPosition : function(element) {
             var g = $(element).parent()[0];
@@ -66,17 +67,21 @@
             var xy = this.getTranslateXY(g);
 
             elementObj.updatePosition(xy.x, xy.y);
-            $(g).attr('transform', 'translate(0, 0)');
+            var transform = $(g).attr('transform');
+            if(transform == undefined || $.trim(transform) == '') {
+                transform = 'translate(0,0)';
+            }else {
+                transform = 'translate(0,0) ' + this.getOtherTransformStr(g);
+            }
 
-
+            $(g).attr('transform', transform);
         },
         /**
          * 获取g标签上translate的值
-         * @param g
+         * @param str translate值字符串
          * @returns {{x: number, y: number}}
          */
-        getTranslateXY : function(g) {
-            var str = $(g).attr('transform');
+        getTranslateXY : function(str) {
             var translateStr = str.substring(str.indexOf('(') + 1, str.length - 1);
             var xy = translateStr.split(',');
 
@@ -89,10 +94,41 @@
          * 获取拖动点更新的transform属性值
          */
         updateGTranslate : function(g, distanceXY) {
-            var xy = this.getTranslateXY(g);
+            var str = this.getTranslateStr(g);
+            var xy = this.getTranslateXY(str);
             x = xy.x + distanceXY.dx;
             y = xy.y + distanceXY.dy;
-            return 'translate(' + x + ',' + y + ')';
+            var other = this.getOtherTransformStr(g);
+            return 'translate(' + x + ',' + y + ') ' + other;
+        },
+        //获取translate字符串
+        getTranslateStr : function(g) {
+            var str = $(g).attr('transform');
+            var arr = str.split(')');
+            for(var i = 0; i < arr.length; i++) {
+                if(arr[i].indexOf('translate') != -1) {
+                    return arr[i] + ')';
+                }
+            }
+        },
+        //获取除translate之外的其他属性值
+        getOtherTransformStr : function(g) {
+            var str = $(g).attr('transform');
+            var arr = str.split(')');
+            var strs = [];
+            var item = null;
+            for(var i = 0; i < arr.length; i++) {
+                item = $.trim(arr[i]);
+                if(item != '' && item.indexOf('translate') == -1) {
+                    strs.push($.trim(arr[i] + ')'));
+                }
+            }
+
+            if(strs.length == 0) {
+                return '';
+            }
+
+            return strs.join(' ');
         },
         /**
          * 获取拖动的xy偏移量
