@@ -89,7 +89,7 @@
             };
 
             if(element) {
-                this.settings.element.renderTitleContent(params);
+                this.settings.element.renderTitleContent(params, true);
             }else {
                 var titleElement = $.titleElement.newInstance();
                 titleElement.loadElement(params);

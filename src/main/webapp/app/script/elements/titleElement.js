@@ -62,13 +62,10 @@
             var svg = this.settings.svg;
             var data = this.settings.data;
             var text = document.createElementNS(constant.SVN_NS, 'text');
-            $(text).attr('x', 0)
-                .attr('y', 0);
             text.onselectstart = function() { //定义文本不可选中
                 return false;
             };
             var g = document.createElementNS(constant.SVN_NS, 'g');
-            $(g).attr('transform', 'translate(0, 0)');
             g.appendChild(text);
             $(g).addClass('element');
             var uuid = $.utils.randomUUID();
@@ -79,7 +76,7 @@
             svg.appendChild(g);
             this.settings.text = text;
             this.settings.editTarget = this.settings.text;
-            this.renderTitleContent(params);
+            this.renderTitleContent(params, false);
         },
         //拖动元素时需要更新元素位置坐标
         updatePosition : function(dx, dy){
@@ -95,7 +92,7 @@
          *
          * @param params 传递的最新题目信息，如果为空直接使用settings.data
          */
-        renderTitleContent : function(params) {
+        renderTitleContent : function(params, isEdit) {
             var data = this.settings.data;
             if(params) {
                 var title = params.title;
@@ -105,6 +102,11 @@
             }
 
             var text = this.settings.text;
+            $(text).attr('x', 0)
+            	.attr('y', 0)
+            	.attr('dy', 0);
+            var g = this.settings.g;
+            $(g).attr('transform', 'translate(0, 0)');
             text.textContent = data.title;
             $(text).css({
                 color: data.textColor,
@@ -117,6 +119,13 @@
             if(select) {
                 select.reSelectElement(this.settings.text);
             }
+            
+            if(isEdit) {
+            	//如果是编辑，需要重新渲染resize控件
+                $(this.settings.g).find('.point').remove();
+                this.settings.components.resize.enable(this.settings.editTarget);
+                this.settings.components.select.selectElement(this.settings.editTarget);
+            }
         },
         /**
          * 控制title居中
@@ -124,11 +133,9 @@
         makeTitleCenter : function() {
             var text = this.settings.text;
             var box = text.getBBox();
-            //居中文本信息
-            var by = box.y;
             var y = $(text).attr('y');
-            //TODO
-            var dy = y - (by + box.height / 2);
+            //居中文本信息
+            var dy = y - box.y;
             $(text).attr('dy', dy);
 
             var g = this.settings.g;

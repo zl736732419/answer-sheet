@@ -113,6 +113,9 @@
             var selectedGs = $(this.settings.svg).find('g' + selectCls);
             $(selectedGs).removeClass(selectCls.substring(1));
             $(selectedGs).find('path' + borderCls).remove();
+            $(selectedGs).find('.point').css({
+            	display: 'none'
+            });
         },
         /**
          * 浏览器右键事件，自定义右键菜单
