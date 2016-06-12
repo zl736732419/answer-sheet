@@ -91,7 +91,9 @@
             if(element) {
                 this.settings.element.renderTitleContent(params);
             }else {
-                $.titleElement.newInstance().loadElement(params);
+                var titleElement = $.titleElement.newInstance();
+                titleElement.loadElement(params);
+                $.answerSheet.settings.elements.push(titleElement);
             }
 
         },

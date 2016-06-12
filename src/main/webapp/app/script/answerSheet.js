@@ -71,6 +71,7 @@
             this.initIcheckStyle();
             this.initPopoverTip();
             this.handleClickSvgEvent();
+            this.handleRightClickSvgEvent();
         },
         /**
          * 初始化popover提示框
@@ -112,6 +113,45 @@
             var selectedGs = $(this.settings.svg).find('g' + selectCls);
             $(selectedGs).removeClass(selectCls.substring(1));
             $(selectedGs).find('path' + borderCls).remove();
+        },
+        /**
+         * 浏览器右键事件，自定义右键菜单
+         */
+        handleRightClickSvgEvent : function() {
+        	var sheet = this;
+            $(document).on('contextmenu', function(e) {
+                return false;
+            });
+
+            $('svg').on('mousedown', function(e) {
+               if(e.which == 3) {
+                   sheet.buildCustomMenu();
+               }
+            });
+
+        },
+        //添加右键菜单
+        buildCustomMenu : function() {
+        	var sheet = this;
+            //如果存在选中的元素，则选项为编辑、删除，否则只有清空选项
+        	var data = [
+                [{
+                    text: "清空",
+                    func: function() {
+                        var elements = sheet.settings.elements;
+                        elements.length = 0;
+                        $('svg').find('.element').remove();
+                    }
+                }]
+            ];
+
+            $('svg').smartMenu(data, {name: 'menu', textLimit: 10});
+        },
+        /**
+         * 判断当前画布中是否存在已经选中的元素
+         */
+        containsSelectedElement: function() {
+            return $('svg').find('.selected').length > 0;
         }
     };
 })(jQuery);

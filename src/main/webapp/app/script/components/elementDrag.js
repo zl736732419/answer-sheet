@@ -27,7 +27,7 @@
             var g = $(element).parent()[0];
             var select = g.obj.settings.components.select; //g.obj
             var drag = this;
-            $(element).off('mousedown').on('mousedown', function(e) {
+            $(element).on('mousedown', function(e) {
                 drag.preventBuddle(e);
                 select.unSelectElement(element);
                 var startXY = drag.getXY(e);

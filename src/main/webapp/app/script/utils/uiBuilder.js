@@ -56,7 +56,15 @@
 
             return path;
         },
-        //画椭圆
+        /**
+         * 画椭圆
+         * @param cx 圆心
+         * @param cy
+         * @param rx x半径
+         * @param ry y半径
+         * @param size stroke-width宽度
+         * @returns {Element}
+         */
         drawEllipse : function(cx, cy, rx, ry, size) {
             var constant = $.answerSheet.settings.constant;
             var ellipse = document.createElementNS(constant.SVN_NS, 'ellipse');
@@ -70,6 +78,84 @@
 
             return ellipse;
         },
+        /**
+         * 画圆
+         * @param cx
+         * @param cy
+         * @param r
+         * @param fill
+         */
+        drawCircle : function(cx, cy, r, fill, fillColor) {
+            var constant = $.answerSheet.settings.constant;
+            var circle = document.createElementNS(constant.SVN_NS, 'circle');
+            $(circle).attr('cx', cx)
+                .attr('cy', cy)
+                .attr('r', r)
+                .attr('stroke-width', 1);
+            if(fill) {
+                if(fillColor == undefined) {
+                    fillColor = '#000';
+                }
+                $(circle).attr('fill', fillColor);
+            }
+        },
+        /**
+         * 绘制渐变色的圆
+         * 比如用于绘制resize八个助拖点
+         * @param cx
+         * @param cy
+         * @param r
+         * @param innerColor
+         * @param outerColor
+         */
+        drawCircleRadialGradient : function(cx, cy, r, innerColor, outerColor) {
+            var constant = $.answerSheet.settings.constant;
+            var gradientId = this.drawRadialGradient(innerColor, outerColor);
+            var fill = 'url(' + gradientId + ')';
+
+            var circle = document.createElementNS(constant.SVN_NS, 'circle');
+            $(circle).attr('cx', cx)
+                .attr('cy', cy)
+                .attr('r', r)
+                .attr('fill', fill);
+
+            return circle;
+        },
+        /**
+         * 绘制放射渐变
+         * @param innerColor
+         * @param outerColor
+         */
+        drawRadialGradient : function(innerColor, outerColor) {
+            var gradientId = $.utils.randomUUID();
+            var constant = $.answerSheet.settings.constant;
+            var radiusGradient = document.createElementNS(constant.SVN_NS, 'radialGradient');
+            var svg = $.answerSheet.settings.svg;
+            var defs = $(svg).find('defs');
+            if(defs.length == 0) {
+                defs = document.createElementNS(constant.SVN_NS, 'defs');
+                $(defs).addClass('element');
+                svg.appendChild(defs);
+            }
+
+            $(radiusGradient).attr('id', gradientId)
+                .attr('fx', '70%')
+                .attr('fy', '30%');
+            var start = document.createElementNS(constant.SVN_NS, 'stop');
+            $(start).attr('offset', '10%')
+                .attr('stop-color', innerColor);
+            radiusGradient.appendChild(start);
+            var stop = document.createElementNS(constant.SVN_NS, 'stop');
+            $(stop).attr('offset', '80%')
+                .attr('stop-color', outerColor);
+            radiusGradient.appendChild(stop);
+
+            $(defs).append(radiusGradient);
+
+            return '#' + gradientId;
+        },
+
+
         /**
          * 绘制文本消息
          * @param x

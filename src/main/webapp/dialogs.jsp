@@ -26,7 +26,7 @@
                         <label for="textSize" class="col-sm-2 control-label">字体大小</label>
                         <div class="col-sm-6">
                             <input type="number" id="textSize" name="textSize" class="form-control required" min="20"
-                                   max="100" placeholder="请输入字号">
+                                   max="100" value="30" placeholder="请输入字号">
                         </div>
                         <span class="col-sm-4 errSpan">
                         </span>

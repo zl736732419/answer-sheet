@@ -12,15 +12,15 @@ li {
   list-style: none;
   padding: 0;
 }
-ul a,
-li a {
+.headerPanel ul a,
+.headerPanel li a {
   display: inline-block;
   text-align: center;
   padding: 10px 15px;
   font-size: 12pt;
 }
-ul a img,
-li a img {
+.headerPanel ul a img,
+.headerPanel li a img {
   width: 50px;
   height: 50px;
   margin: 0 auto;
@@ -29,7 +29,7 @@ li a img {
   margin-bottom: 8px;
   display: block;
 }
-li {
+.headerPanel li {
   display: inline-block;
 }
 a:link {

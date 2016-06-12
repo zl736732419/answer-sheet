@@ -66,7 +66,9 @@
                     //编辑操作
                     //TODO
                 }else {
-                    $.baseInfoElement.newInstance().loadElement(attentions);
+                    var baseInfoElement = $.baseInfoElement.newInstance();
+                    baseInfoElement.loadElement(attentions);
+                    $.answerSheet.settings.elements.push(baseInfoElement);
                 }
                 dialog.hide();
             });

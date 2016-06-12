@@ -23,12 +23,16 @@
 <!--toastr-->
 <link rel="stylesheet" type="text/css"
 	href="app/bower_components/toastr/toastr.css">
+<!--jquery smartmenu-->
+<link rel="stylesheet" type="text/css"
+	href="app/lib/jquery.smartMenu/css/smartMenu.css">
 
 <!--自定义样式-->
 <link rel="stylesheet" type="text/css" href="app/css/common.css">
 <link rel="stylesheet" type="text/css" href="app/css/header.css">
 <link rel="stylesheet" type="text/css" href="app/css/answerSheet.css">
 <link rel="stylesheet" type="text/css" href="app/css/elementSelect.css">
+<link rel="stylesheet" type="text/css" href="app/css/elementResize.css">
 <!-- css link end -->
 <title>题卡设计界面</title>
 </head>
@@ -103,6 +107,9 @@
 <!--toastr-->
 <script type="text/javascript"
 	src="app/bower_components/toastr/toastr.js"></script>
+<!--jquery smartMenu-->
+<script type="text/javascript"
+	src="app/lib/jquery.smartMenu/js/jquery-smartMenu.js"></script>
 
 
 <!--加载配置参数-->
@@ -113,23 +120,23 @@
 
 <!--自定义js库-->
 <script type="text/javascript" src="app/script/utils/uiBuilder.js"></script>
+<script type="text/javascript" src="app/script/utils/utils.js"></script>
 <script type="text/javascript" src="app/script/answerSheet.js"></script>
 <script type="text/javascript" src="app/script/headerEvent.js"></script>
 <!--加载元素控件-->
 <script type="text/javascript" src="app/script/elements/titleElement.js"></script>
-<script type="text/javascript"
-	src="app/script/elements/baseInfoElement.js"></script>
+<script type="text/javascript" src="app/script/elements/baseInfoElement.js"></script>
 
 <!--加载元素编辑控件-->
-<script type="text/javascript"
-	src="app/script/components/elementSelect.js"></script>
+<script type="text/javascript" src="app/script/components/elementSelect.js"></script>
 <script type="text/javascript" src="app/script/components/elementDrag.js"></script>
+<script type="text/javascript" src="app/script/components/elementResize.js"></script>
+<script type="text/javascript" src="app/script/components/elementContextMenu.js"></script>
 
 <!--加载元素控件创建弹出框-->
 <script type="text/javascript" src="app/script/dialog/titleDialog.js"></script>
 <script type="text/javascript" src="app/script/dialog/baseInfoDialog.js"></script>
-<script type="text/javascript"
-	src="app/script/dialog/updateAttentionNoteDialog.js"></script>
+<script type="text/javascript" src="app/script/dialog/updateAttentionNoteDialog.js"></script>
 
 <script type="text/javascript">
 	$(function() {

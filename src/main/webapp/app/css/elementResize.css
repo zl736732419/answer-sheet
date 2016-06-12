@@ -1,0 +1,31 @@
+circle.leftUp:hover {
+    cursor: nw-resize;
+}
+
+circle.up:hover {
+    cursor: n-resize;
+}
+
+circle.rightUp:hover {
+    cursor: ne-resize;
+}
+
+circle.left:hover {
+    cursor: w-resize;
+}
+
+circle.right:hover {
+    cursor: e-resize;
+}
+
+circle.leftDown:hover {
+    cursor: sw-resize;
+}
+
+circle.down:hover {
+    cursor: s-resize;
+}
+
+circle.rightDown:hover {
+    cursor: se-resize;
+}

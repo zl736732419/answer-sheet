@@ -53,7 +53,11 @@
          */
         unSelectElement : function(element) {
             var cls = this.settings.cls.substring(1);
-            $(element).parent().removeClass(cls);
+            var g = $(element).parent()[0];
+            $(g).removeClass(cls);
+            $(g).find('.point').css({
+                display: 'none'
+            });
             this.removeBorder(element);
         },
         /**
@@ -62,9 +66,13 @@
          */
         selectElement : function(element) {
             var cls = this.settings.cls.substring(1);
-            $(element).parent().addClass(cls);
+            var g = $(element).parent()[0];
+            $(g).addClass(cls);
             //绘制边框线
             this.addBorder(element);
+            $(g).find('.point').css({
+                display: 'block'
+            });
         },
         /**
          * 重新选中，更新之前选中状态

@@ -8,6 +8,7 @@
 (function($) {
     $.baseInfoElement = {
         settings : {
+            uuid: null,
             svg : null,
             element : null,
             editTarget: null, ///用于编辑的元素
@@ -47,7 +48,8 @@
             components : {
                 select : null, //选中控件
                 drag : null, //拖动控件
-                resize : null //resize控件
+                resize : null, //resize控件
+                contextMenu: null //右键菜单
             }
         },
         /**
@@ -99,16 +101,25 @@
             var svg = this.settings.svg;
             var g = document.createElementNS(constant.SVN_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
+            $(g).addClass("element");
             g.obj = this;
             this.settings.g = g;
             svg.appendChild(g);
-            svg.obj.settings.elements.push(this);
+            var uuid = $.utils.randomUUID();
+            this.settings.uuid = uuid;
+            $(g).attr('id', uuid);
 
             this.appendContainerRect();
             this.appendSeperatorLine();
             this.appendLeftAttentionNote(params);
             this.drawZkzhPanel();
             this.drawSubjectPanel();
+        },
+        /**
+         * 编辑基本信息元素
+         */
+        editElement : function() {
+            //TODO
         },
         /**
          * 绘制左侧注意事项和考生基本信息
@@ -558,6 +569,18 @@
                 this.settings.components.drag = $.elementDrag.newInstance();
             }
             this.settings.components.drag.enable(this.settings.editTarget);
+
+            //resize
+            if(this.settings.components.resize == null) {
+                this.settings.components.resize = $.elementResize.newInstance();
+            }
+            this.settings.components.resize.enable(this.settings.editTarget);
+
+            //右键菜单
+            if(this.settings.components.contextMenu == null) {
+                this.settings.components.contextMenu = $.elementContextMenu.newInstance();
+            }
+            this.settings.components.contextMenu.enable(this.settings.editTarget);
         }
     };
 })(jQuery);
