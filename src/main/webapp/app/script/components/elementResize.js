@@ -45,20 +45,15 @@
             var pointG = this.settings.pointG;
             var point = null;
 
-            var startX = 0; //开始坐标x,mousedown记录拖动起点
-            var startY = 0; //开始坐标y,mousedown记录拖动起点
-            var curX = 0; //当前坐标x,mousemove记录移动坐标
-            var curY = 0; //当前坐标y,mousemove记录移动坐标
             var startXY = null; //开始鼠标位置坐标
             var curXY = null; //当前鼠标位置坐标
             var distanceXY = null; //鼠标移动的差值坐标
+            var transformStr = null; //更新后的transformStr
             $(pointG).find('.point').on('mousedown', function(e) {
                 e.preventDefault();
                 point = $(this);
                 var pointCls = $(point).attr('class').split(' ')[1];
                 startXY = resize.getXY(e);
-                startX = position.x;
-                startY = position.y;
                 //处理鼠标按住拖动事件
                 $(document).on('mousemove', function(e) {
                     e.preventDefault();
@@ -67,7 +62,7 @@
 
                     switch(pointCls) {
                         case 'leftUp': //左上角
-                            transform = resize.getLeftUpTransformer(parentG, distanceXy);
+                            transformStr = resize.getLeftUpTransformer(parentG, distanceXY);
                             break;
                         case 'up': //上中点
                             break;
@@ -85,7 +80,16 @@
                             break;
                     }
 
+                    $(parentG).attr('transform', transformStr);
+
                     startXY = $.extend(true, {}, curXY);
+                });
+
+                $(document).on('mouseup', function(e) {
+                    //清理现场
+                    e.preventDefault();
+                    $(document).off('mousemove');
+                    $(document).off('mouseup');
                 });
             });
         },
@@ -101,7 +105,8 @@
             $(parentG).attr(transformStr);
 
             var scaleXY = resize.getScaleXY(parentG, distanceXY);
-            resize.updateGScale(parentG, scaleXY);
+            transformStr = resize.updateGScale(parentG, scaleXY);
+            return transformStr;
         },
         /**
          * 根据translate获取scaleXY
@@ -113,7 +118,7 @@
             var box = parentG.getBBox();
             var width = box.width;
             var height = box.height;
-            var curWidth = width + distance.dx;
+            var curWidth = width + distanceXY.dx;
             var curHeight = height + distanceXY.dy;
 
             return {
@@ -151,13 +156,13 @@
             var xy = this.getTranslateXY(str);
             x = xy.x + distanceXY.dx;
             y = xy.y + distanceXY.dy;
-            var translateStr = 'translate(' + distanceXY.dx + ',' + distanceXY.dy + ')';
-            var transfromStr = $(g).attr('transform');
+            var translateStr = 'translate(' + x + ',' + y + ')';
+            var transformStr = $(g).attr('transform');
             if(transformStr.indexOf('translate') == -1) {
                 transformStr += (' ' + translateStr);
             }else {
-                var reg = /translate\(([0-9,.]+)\)/g;
-                transformStr = _.replace(transfromStr, reg, translateStr);
+                var reg = /translate\(([0-9,. -]+)\)/g;
+                transformStr = _.replace(transformStr, reg, translateStr);
             }
             return _.trim(transformStr);
         },
@@ -168,15 +173,15 @@
          */
         updateGScale: function(g, scaleXY) {
             var scaleStr = 'scale(' + scaleXY.x + ',' + scaleXY.y + ')';
-            var transfromStr = $(g).attr('transform');
-            if(transfromStr.indexOf('scale') == -1) {
+            var transformStr = $(g).attr('transform');
+            if(transformStr.indexOf('scale') == -1) {
                 transformStr += (' ' + scaleStr);
             }else {
-                var reg = /scale\(([0-9,.]+)\)/g;
-                transformStr = _.replace(transfromStr, reg, scaleStr);
+                var reg = /scale\(([0-9,. ]+)\)/g;
+                transformStr = _.replace(transformStr, reg, scaleStr);
             }
 
-            return transformStr;
+            return _.trim(transformStr);
         },
         /**
          * 获取g标签上translate的值
@@ -184,7 +189,7 @@
          * @returns {{x: number, y: number}}
          */
         getTranslateXY : function(translateStr) {
-            var str = str.substring(str.indexOf('(') + 1, str.length - 1);
+            var str = translateStr.substring(translateStr.indexOf('(') + 1, translateStr.length - 1);
             var xy = str.split(',');
 
             return {

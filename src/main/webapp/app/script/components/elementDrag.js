@@ -33,24 +33,20 @@
                 var startXY = drag.getXY(e);
                 drag.changeMouseToDragStyle(element);
 
-                $(document).mousemove(function(e) { //拖动时移动
+                $(document).on('mousemove', function(e) { //拖动时移动
                     drag.preventBuddle(e);
                     var targetXY = drag.getXY(e);
                     var distanceXY = drag.getDistanceXY(targetXY, startXY);
-
                     var translateStr = drag.updateGTranslate(g, distanceXY);
                     $(g).attr('transform', translateStr);
-
-                    startXY = targetXY;
+                    startXY = $.extend(true, {}, targetXY);
                 });
 
-                $(document).mouseup(function(e) {
+                $(document).on('mouseup',function(e) {
                     drag.preventBuddle(e);
                     drag.changeMouseToDefaultStyle(element);
-                    $(document).unbind('mousemove');
-                    $(document).unbind('mouseup');
-
-                    // drag.updateElementPosition(element);
+                    $(document).off('mousemove');
+                    $(document).off('mouseup');
 
                     select.selectElement(element);
                 });
@@ -101,12 +97,12 @@
             x = xy.x + distanceXY.dx;
             y = xy.y + distanceXY.dy;
             var translateStr = 'translate(' + x + ',' + y + ')';
-            var transfromStr = $(g).attr('transform');
+            var transformStr = $(g).attr('transform');
             if(transformStr.indexOf('translate') == -1) {
                 transformStr += (' ' + translateStr);
             }else {
-                var reg = /translate\(([0-9,.]+)\)/g;
-                transformStr = _.replace(transfromStr, reg, translateStr);
+                var reg = /translate\(([0-9,. -]+)\)/g;
+                transformStr = _.replace(transformStr, reg, translateStr);
             }
 
             return _.trim(transformStr);
