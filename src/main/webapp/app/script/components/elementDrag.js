@@ -62,6 +62,7 @@
          * @Deprecated
          */
         updateElementPosition : function(element) {
+            var drag = this;
             var g = $(element).parent()[0];
             var elementObj = g.obj;
             var xy = this.getTranslateXY(g);
@@ -71,7 +72,8 @@
             if(transform == undefined || $.trim(transform) == '') {
                 transform = 'translate(0,0)';
             }else {
-                transform = 'translate(0,0) ' + this.getOtherTransformStr(g);
+                var distanceXY = {dx: 0, dy:0};
+                transform = drag.updateGTranslate(g, distanceXY);
             }
 
             $(g).attr('transform', transform);
@@ -98,8 +100,16 @@
             var xy = this.getTranslateXY(str);
             x = xy.x + distanceXY.dx;
             y = xy.y + distanceXY.dy;
-            var other = this.getOtherTransformStr(g);
-            return 'translate(' + x + ',' + y + ') ' + other;
+            var translateStr = 'translate(' + x + ',' + y + ')';
+            var transfromStr = $(g).attr('transform');
+            if(transformStr.indexOf('translate') == -1) {
+                transformStr += (' ' + translateStr);
+            }else {
+                var reg = /translate\(([0-9,.]+)\)/g;
+                transformStr = _.replace(transfromStr, reg, translateStr);
+            }
+
+            return _.trim(transformStr);
         },
         //获取translate字符串
         getTranslateStr : function(g) {
@@ -110,25 +120,6 @@
                     return arr[i] + ')';
                 }
             }
-        },
-        //获取除translate之外的其他属性值
-        getOtherTransformStr : function(g) {
-            var str = $(g).attr('transform');
-            var arr = str.split(')');
-            var strs = [];
-            var item = null;
-            for(var i = 0; i < arr.length; i++) {
-                item = $.trim(arr[i]);
-                if(item != '' && item.indexOf('translate') == -1) {
-                    strs.push($.trim(arr[i] + ')'));
-                }
-            }
-
-            if(strs.length == 0) {
-                return '';
-            }
-
-            return strs.join(' ');
         },
         /**
          * 获取拖动的xy偏移量

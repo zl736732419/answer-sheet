@@ -98,6 +98,8 @@
 <!--bootstrap-->
 <script type="text/javascript"
 	src="app/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<!--lodash-->
+<script type="text/javascript" src="app/bower_components/lodash/dist/lodash.min.js"></script>
 <!--iCheck-->
 <script type="text/javascript"
 	src="app/bower_components/iCheck/icheck.js"></script>

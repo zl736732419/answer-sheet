@@ -40,18 +40,171 @@
          * @param element
          */
         initPointDragEvent: function(element) {
+            var resize = this;
             var parentG = $(element).parent()[0];
             var pointG = this.settings.pointG;
             var point = null;
-            var pointCls = null;
+
+            var startX = 0; //开始坐标x,mousedown记录拖动起点
+            var startY = 0; //开始坐标y,mousedown记录拖动起点
+            var curX = 0; //当前坐标x,mousemove记录移动坐标
+            var curY = 0; //当前坐标y,mousemove记录移动坐标
+            var startXY = null; //开始鼠标位置坐标
+            var curXY = null; //当前鼠标位置坐标
+            var distanceXY = null; //鼠标移动的差值坐标
             $(pointG).find('.point').on('mousedown', function(e) {
                 e.preventDefault();
                 point = $(this);
-                pointCls = $(this).attr('class').split(' ')[0];
-                alert(pointCls);
+                var pointCls = $(point).attr('class').split(' ')[1];
+                startXY = resize.getXY(e);
+                startX = position.x;
+                startY = position.y;
+                //处理鼠标按住拖动事件
+                $(document).on('mousemove', function(e) {
+                    e.preventDefault();
+                    curXY = resize.getXY(e);
+                    distanceXY = resize.getDistanceXY(startXY, curXY);
+
+                    switch(pointCls) {
+                        case 'leftUp': //左上角
+                            transform = resize.getLeftUpTransformer(parentG, distanceXy);
+                            break;
+                        case 'up': //上中点
+                            break;
+                        case 'rightUp': //右上角
+                            break;
+                        case 'left': //左中点
+                            break;
+                        case 'right': //右中点
+                            break;
+                        case 'leftDown': //左下角
+                            break;
+                        case 'down':
+                            break;
+                        case 'rightDown': //右下角
+                            break;
+                    }
+
+                    startXY = $.extend(true, {}, curXY);
+                });
             });
+        },
+        /**
+         * 获取左上角改变后的transform属性
+         * translate (x-,y-), scale (x-,y+)
+         * @param parentG
+         * @param distanceXY
+         */
+        getLeftUpTransformer: function(parentG, distanceXY) {
+            var resize = this;
+            var transformStr = resize.updateGTranslate(parentG, distanceXY);
+            $(parentG).attr(transformStr);
 
+            var scaleXY = resize.getScaleXY(parentG, distanceXY);
+            resize.updateGScale(parentG, scaleXY);
+        },
+        /**
+         * 根据translate获取scaleXY
+         * @param parentG
+         * @param distanceXY
+         * @return {x:scaleX, y:scaleY}
+         */
+        getScaleXY: function(parentG, distanceXY) {
+            var box = parentG.getBBox();
+            var width = box.width;
+            var height = box.height;
+            var curWidth = width + distance.dx;
+            var curHeight = height + distanceXY.dy;
 
+            return {
+                x: (curWidth / width),
+                y: (curHeight / height)
+            };
+        },
+        /**
+         * 获取鼠标当前位置信息
+         * @param e
+         * @returns {x: *, y: *}
+         */
+        getXY: function(e) {
+            return {
+                x: e.pageX,
+                y: e.pageY
+            };
+        },
+        /**
+         * 根据开始位置和当前位置获取坐标差值
+         * @param startXY
+         * @param curXY
+         */
+        getDistanceXY: function(startXY, curXY) {
+            return {
+                dx: curXY.x - startXY.x,
+                dy: curXY.y - startXY.y
+            };
+        },
+        /**
+         * 获取拖动点更新的transform属性值
+         */
+        updateGTranslate : function(g, distanceXY) {
+            var str = this.getTranslateStr(g);
+            var xy = this.getTranslateXY(str);
+            x = xy.x + distanceXY.dx;
+            y = xy.y + distanceXY.dy;
+            var translateStr = 'translate(' + distanceXY.dx + ',' + distanceXY.dy + ')';
+            var transfromStr = $(g).attr('transform');
+            if(transformStr.indexOf('translate') == -1) {
+                transformStr += (' ' + translateStr);
+            }else {
+                var reg = /translate\(([0-9,.]+)\)/g;
+                transformStr = _.replace(transfromStr, reg, translateStr);
+            }
+            return _.trim(transformStr);
+        },
+        /**
+         * 根据给定的g和更新的scaleXY改变scale值
+         * @param g
+         * @param scaleXY
+         */
+        updateGScale: function(g, scaleXY) {
+            var scaleStr = 'scale(' + scaleXY.x + ',' + scaleXY.y + ')';
+            var transfromStr = $(g).attr('transform');
+            if(transfromStr.indexOf('scale') == -1) {
+                transformStr += (' ' + scaleStr);
+            }else {
+                var reg = /scale\(([0-9,.]+)\)/g;
+                transformStr = _.replace(transfromStr, reg, scaleStr);
+            }
+
+            return transformStr;
+        },
+        /**
+         * 获取g标签上translate的值
+         * @param translateStr translate值字符串
+         * @returns {{x: number, y: number}}
+         */
+        getTranslateXY : function(translateStr) {
+            var str = str.substring(str.indexOf('(') + 1, str.length - 1);
+            var xy = str.split(',');
+
+            return {
+                x : Number(xy[0]),
+                y : Number(xy[1])
+            };
+        },
+        /**
+         * 获取translate字符串
+         * @param g
+         * @returns {*}
+         */
+        getTranslateStr : function(g) {
+            var str = $(g).attr('transform');
+            var arr = str.split(')');
+            for(var i = 0; i < arr.length; i++) {
+                if(arr[i].indexOf('translate') != -1) {
+                    return arr[i] + ')';
+                }
+            }
         },
         /**
          * 绘制八个助拖点，帮助用户拖动
