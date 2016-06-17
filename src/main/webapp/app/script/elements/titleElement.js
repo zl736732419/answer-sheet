@@ -13,6 +13,7 @@
             uuid: null, //唯一标识，采用时间毫秒值
             svg : null, //答题卡内容面板，从answerSheet.settings.ui获取
             element: null,
+            size: null, //记录元素创建时的初始宽高，用于缩放组件进行缩放计算
             text : null, //当前题目文本对象，需要在loadElement中创建
             editTarget: null, //用于编辑的元素
             g : null,
@@ -123,9 +124,25 @@
             if(isEdit) {
             	//如果是编辑，需要重新渲染resize控件
                 $(this.settings.g).find('.point').remove();
-                this.settings.components.resize.enable(this.settings.editTarget);
-                this.settings.components.select.selectElement(this.settings.editTarget);
+                this.settings.components.resize.enable(this);
+                this.settings.components.select.selectElement(this);
             }
+
+            this.initSize();
+        },
+        /**
+         * 初始化宽高
+         * 该方法主要记录最初的元素宽高，用于缩放控制，
+         * 每一个元素都应该实现该方法
+         */
+        initSize: function() {
+            var g = this.settings.g;
+            //记录元素最初的宽高
+            var box = g.getBBox();
+            this.settings.size = {
+                width: box.width,
+                height: box.height
+            };
         },
         /**
          * 控制title居中
@@ -175,24 +192,24 @@
             if(this.settings.components.select == null) {
                 this.settings.components.select = $.elementSelect.newInstance();
             }
-            this.settings.components.select.enable(this.settings.editTarget);
+            this.settings.components.select.enable(this);
 
             //拖动
             if(this.settings.components.drag == null) {
                 this.settings.components.drag = $.elementDrag.newInstance();
             }
-            this.settings.components.drag.enable(this.settings.editTarget);
+            this.settings.components.drag.enable(this);
 
             if(this.settings.components.resize == null) {
                 this.settings.components.resize = $.elementResize.newInstance();
             }
-            this.settings.components.resize.enable(this.settings.editTarget);
+            this.settings.components.resize.enable(this);
 
             //右键菜单
             if(this.settings.components.contextMenu == null) {
                 this.settings.components.contextMenu = $.elementContextMenu.newInstance();
             }
-            this.settings.components.contextMenu.enable(this.settings.editTarget);
+            this.settings.components.contextMenu.enable(this);
         }
     };
 })(jQuery);

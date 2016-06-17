@@ -9,7 +9,6 @@
 (function($) {
     $.elementDrag = {
         settings : {
-
         },
         /**
          * 创建该组件实例
@@ -21,7 +20,7 @@
             if(!element) {
                 throw new Error('错误，当前要选中的目标元素为空!');
             }
-            this.drag(element);
+            this.drag(element.settings.editTarget);
         },
         drag : function(element) {
             var g = $(element).parent()[0];

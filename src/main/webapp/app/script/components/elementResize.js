@@ -13,18 +13,20 @@
         newInstance: function() {
             return $.extend(true, {}, this);
         },
-        enable: function(element) {
-            if(!element) {
+        enable: function(elementObj) {
+            if(!elementObj) {
                 throw new Error('错误，当前要选中的目标元素为空!');
             }
 
-            this.resize(element);
+            this.resize(elementObj);
         },
         /**
          * resize控件入口函数
-         * @param element
+         * @param elementObj
          */
-        resize: function(element) {
+        resize: function(elementObj) {
+            //TODO 需要修改elementObj
+
             this.drawEightPoints(element);
             this.initEvent(element);
         },
@@ -102,7 +104,7 @@
         getLeftUpTransformer: function(parentG, distanceXY) {
             var resize = this;
             var transformStr = resize.updateGTranslate(parentG, distanceXY);
-            $(parentG).attr(transformStr);
+            $(parentG).attr('transform', transformStr);
 
             var scaleXY = resize.getScaleXY(parentG, distanceXY);
             transformStr = resize.updateGScale(parentG, scaleXY);

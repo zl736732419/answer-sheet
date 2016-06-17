@@ -72,7 +72,6 @@
                 if(valid) {
                     dialog.createOrUpdate();
                 }
-
             });
         },
         /**

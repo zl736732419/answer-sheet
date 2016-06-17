@@ -21,7 +21,8 @@
         /**
          * 针对某一元素启用选中组件
          */
-        enable : function(element) {
+        enable : function(elementObj) {
+            var element = elementObj.settings.editTarget;
             if(!element) {
                 throw new Error('错误，当前要选中的目标元素为空!');
             }
