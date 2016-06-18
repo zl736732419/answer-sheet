@@ -15,6 +15,11 @@
             filling : 'input[name=filling]',
             absent : 'input[name=absent]',
             attentionNote : 'input[name=attentionNote]',
+            subject: 'input[name=subject]',
+            barCode: 'input[name=barCode]',
+            seatNo: 'input[name=seatNo]',
+            sheetType: 'input[name=sheetType]',
+            uncheck: '.uncheck', //默认不选中的样式
             element : null,
             btns : {
                 attentionNoteBtn : '.attentionNoteBtn',
@@ -42,7 +47,7 @@
         },
 
         initCheckRadio : function() {
-            $(this.settings.ui).find('input').not(this.settings.className).iCheck('check');
+            $(this.settings.ui).find('input').not(this.settings.uncheck).iCheck('check');
         },
         initEvent : function() {
             this.handleOkEvent();

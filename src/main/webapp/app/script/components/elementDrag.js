@@ -16,11 +16,11 @@
         newInstance : function() {
             return $.extend(true, {}, this);
         },
-        enable : function(element) {
-            if(!element) {
+        enable : function(elementObj) {
+            if(!elementObj) {
                 throw new Error('错误，当前要选中的目标元素为空!');
             }
-            this.drag(element.settings.editTarget);
+            this.drag(elementObj.settings.editTarget);
         },
         drag : function(element) {
             var g = $(element).parent()[0];

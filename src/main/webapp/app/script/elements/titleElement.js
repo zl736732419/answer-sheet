@@ -13,7 +13,16 @@
             uuid: null, //唯一标识，采用时间毫秒值
             svg : null, //答题卡内容面板，从answerSheet.settings.ui获取
             element: null,
-            size: null, //记录元素创建时的初始宽高，用于缩放组件进行缩放计算
+            resize: {//记录元素创建时的初始宽高，用于缩放组件进行缩放计算
+                size: { //记录最初大小
+                    width:0,
+                    height:0
+                },
+                curSize: { //记录当前大小
+                    width:0,
+                    height:0
+                }
+            },
             text : null, //当前题目文本对象，需要在loadElement中创建
             editTarget: null, //用于编辑的元素
             g : null,
@@ -124,8 +133,8 @@
             if(isEdit) {
             	//如果是编辑，需要重新渲染resize控件
                 $(this.settings.g).find('.point').remove();
+                this.settings.components.select.selectElement(this.settings.editTarget);
                 this.settings.components.resize.enable(this);
-                this.settings.components.select.selectElement(this);
             }
 
             this.initSize();
@@ -139,10 +148,12 @@
             var g = this.settings.g;
             //记录元素最初的宽高
             var box = g.getBBox();
-            this.settings.size = {
+            this.settings.resize.size = {
                 width: box.width,
                 height: box.height
             };
+
+            this.settings.resize.curSize = $.extend(true, {}, this.settings.resize.size);
         },
         /**
          * 控制title居中

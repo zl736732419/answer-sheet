@@ -69,20 +69,20 @@
          */
         initEvent : function() {
             this.initIcheckStyle();
-            this.initPopoverTip();
+            this.initToolTip();
             this.handleClickSvgEvent();
             this.handleRightClickSvgEvent();
         },
         /**
          * 初始化popover提示框
          */
-        initPopoverTip : function() {
-            $('a[data-toggle=popover]').off('mouseenter').on('mouseenter', function(e) {
-                $(this).popover('show');
+        initToolTip : function() {
+            $('a[data-toggle=tooltip]').off('mouseenter').on('mouseenter', function(e) {
+                $(this).tooltip('show');
             });
 
-            $('a[data-toggle=popover]').off('mouseleave').on('mouseleave', function(e) {
-                $(this).popover('hide');
+            $('a[data-toggle=tooltip]').off('mouseleave').on('mouseleave', function(e) {
+                $(this).tooltip('hide');
             });
         },
         /**

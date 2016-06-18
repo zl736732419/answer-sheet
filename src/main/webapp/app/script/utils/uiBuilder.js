@@ -140,7 +140,7 @@
 
             $(radiusGradient).attr('id', gradientId)
                 .attr('fx', '70%')
-                .attr('fy', '30%');
+                .attr('fy', '60%');
             var start = document.createElementNS(constant.SVN_NS, 'stop');
             $(start).attr('offset', '10%')
                 .attr('stop-color', innerColor);

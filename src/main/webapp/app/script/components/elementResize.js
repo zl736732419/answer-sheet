@@ -27,23 +27,23 @@
         resize: function(elementObj) {
             //TODO 需要修改elementObj
 
-            this.drawEightPoints(element);
-            this.initEvent(element);
+            this.drawEightPoints(elementObj.settings.editTarget);
+            this.initEvent(elementObj);
         },
         /**
          * 为resize控件添加事件响应
          * @param element
          */
-        initEvent : function(element) {
-            this.initPointDragEvent(element);
+        initEvent : function(elementObj) {
+            this.initPointDragEvent(elementObj);
         },
         /**
          * 8个助拖点拖动事件
          * @param element
          */
-        initPointDragEvent: function(element) {
+        initPointDragEvent: function(elementObj) {
             var resize = this;
-            var parentG = $(element).parent()[0];
+            var parentG = elementObj.settings.g;
             var pointG = this.settings.pointG;
             var point = null;
 
@@ -64,21 +64,28 @@
 
                     switch(pointCls) {
                         case 'leftUp': //左上角
-                            transformStr = resize.getLeftUpTransformer(parentG, distanceXY);
+                            transformStr = resize.getLeftUpTransformer(elementObj, distanceXY);
                             break;
                         case 'up': //上中点
+                            transformStr = resize.getUpTransformer(elementObj, distanceXY);
                             break;
                         case 'rightUp': //右上角
+                            transformStr = resize.getRightUpTransformer(elementObj, distanceXY);
                             break;
                         case 'left': //左中点
+                            transformStr = resize.getLeftTransformer(elementObj, distanceXY);
                             break;
                         case 'right': //右中点
+                            transformStr = resize.getRightTransformer(elementObj, distanceXY);
                             break;
                         case 'leftDown': //左下角
+                            transformStr = resize.getLeftDownTransformer(elementObj, distanceXY);
                             break;
                         case 'down':
+                            transformStr = resize.getDownTransformer(elementObj, distanceXY);
                             break;
                         case 'rightDown': //右下角
+                            transformStr = resize.getRightDownTransformer(elementObj, distanceXY);
                             break;
                     }
 
@@ -98,34 +105,147 @@
         /**
          * 获取左上角改变后的transform属性
          * translate (x-,y-), scale (x-,y+)
-         * @param parentG
+         * @param elementObj
          * @param distanceXY
          */
-        getLeftUpTransformer: function(parentG, distanceXY) {
+        getLeftUpTransformer: function(elementObj, distanceXY) {
             var resize = this;
-            var transformStr = resize.updateGTranslate(parentG, distanceXY);
-            $(parentG).attr('transform', transformStr);
+            var curSize = elementObj.settings.resize.curSize;
+            curSize.width -= distanceXY.dx;
+            curSize.height -= distanceXY.dy;
 
-            var scaleXY = resize.getScaleXY(parentG, distanceXY);
-            transformStr = resize.updateGScale(parentG, scaleXY);
+            return resize.updateGTransform(elementObj, curSize, distanceXY);
+        },
+        /**
+         * 获取上中点改变后的transform属性
+         * @param elementObj
+         * @param distanceXY
+         */
+        getUpTransformer: function(elementObj, distanceXY) {
+            var resize = this;
+            var curSize = elementObj.settings.resize.curSize;
+            curSize.height -= distanceXY.dy;
+            distanceXY.dx = 0; //进行垂直方向缩放时禁止水平拖动
+
+            return resize.updateGTransform(elementObj, curSize, distanceXY);
+        },
+        /**
+         * 获取右上角改变后的transform属性
+         * @param elementObj
+         * @param distanceXY
+         * @returns {*|string}
+         */
+        getRightUpTransformer: function(elementObj, distanceXY) {
+            var resize = this;
+            var curSize = elementObj.settings.resize.curSize;
+            curSize.width += distanceXY.dx;
+            curSize.height -= distanceXY.dy;
+            distanceXY.dx = 0;
+
+            return resize.updateGTransform(elementObj, curSize, distanceXY);
+        },
+        /**
+         * 获取左中点改变后的transform属性
+         * @param elementObj
+         * @param distanceXY
+         */
+        getLeftTransformer: function(elementObj, distanceXY){
+            var resize = this;
+            var curSize = elementObj.settings.resize.curSize;
+            curSize.width -= distanceXY.dx;
+            distanceXY.dy = 0;
+
+            return resize.updateGTransform(elementObj, curSize, distanceXY);
+        },
+        /**
+         * 获取右中点改变后的transform属性
+         * @param elementObj
+         * @param distanceXY
+         */
+        getRightTransformer: function(elementObj, distanceXY) {
+            var resize = this;
+            var curSize = elementObj.settings.resize.curSize;
+            curSize.width += distanceXY.dx;
+            distanceXY.dx = 0;
+            distanceXY.dy = 0;
+
+            return resize.updateGTransform(elementObj, curSize, distanceXY);
+        },
+        /**
+         * 获取左下角改变后的transform属性
+         * @param elementObj
+         * @param distanceXY
+         */
+        getLeftDownTransformer: function(elementObj, distanceXY) {
+            var resize = this;
+            var curSize = elementObj.settings.resize.curSize;
+            curSize.width -= distanceXY.dx;
+            curSize.height += distanceXY.dy;
+
+            distanceXY.dy = 0;
+
+            return resize.updateGTransform(elementObj, curSize, distanceXY);
+        },
+        /**
+         * 获取改变下中点后的transform属性
+         * @param elementObj
+         * @param distanceXY
+         */
+        getDownTransformer: function(elementObj, distanceXY) {
+            var resize = this;
+            var curSize = elementObj.settings.resize.curSize;
+            curSize.height += distanceXY.dy;
+            distanceXY.dx = 0;
+            distanceXY.dy = 0;
+
+            return resize.updateGTransform(elementObj, curSize, distanceXY);
+        },
+        /**
+         * 获取改变右下角后的transform属性值
+         * @param elementObj
+         * @param distanceXY
+         */
+        getRightDownTransformer: function(elementObj, distanceXY) {
+            var resize = this;
+            var curSize = elementObj.settings.resize.curSize;
+            curSize.width += distanceXY.dx;
+            curSize.height += distanceXY.dy;
+            distanceXY.dx = 0;
+            distanceXY.dy = 0;
+
+            return resize.updateGTransform(elementObj, curSize, distanceXY);
+        },
+        /**
+         * 统一获取改变后的transform属性值
+         * @param elementObj
+         * @param curSize
+         * @param distanceXY
+         * @returns string
+         */
+        updateGTransform: function(elementObj, curSize, distanceXY) {
+            var resize = this;
+            var g = elementObj.settings.g;
+
+            var transformStr = resize.updateGTranslate(g, distanceXY);
+            $(g).attr('transform', transformStr);
+
+            var scaleXY = resize.getScaleXY(elementObj, curSize, distanceXY);
+            transformStr = resize.updateGScale(g, scaleXY);
+
             return transformStr;
         },
         /**
          * 根据translate获取scaleXY
-         * @param parentG
+         * @param elementObj
+         * @param curSize
          * @param distanceXY
          * @return {x:scaleX, y:scaleY}
          */
-        getScaleXY: function(parentG, distanceXY) {
-            var box = parentG.getBBox();
-            var width = box.width;
-            var height = box.height;
-            var curWidth = width + distanceXY.dx;
-            var curHeight = height + distanceXY.dy;
-
+        getScaleXY: function(elementObj, curSize, distanceXY) {
+            var size = elementObj.settings.resize.size;
             return {
-                x: (curWidth / width),
-                y: (curHeight / height)
+                x: (curSize.width / size.width),
+                y: (curSize.height / size.height)
             };
         },
         /**

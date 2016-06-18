@@ -12,8 +12,8 @@
         newInstance: function() {
             return $.extend(true, {} ,this);
         },
-        enable: function(element) {
-            this.initEvent(element);
+        enable: function(elementObj) {
+            this.initEvent(elementObj.settings.editTarget);
         },
         /**
          * 初始化元素事件

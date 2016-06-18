@@ -12,6 +12,16 @@
             svg : null,
             element : null,
             editTarget: null, ///用于编辑的元素
+            resize: {//记录元素创建时的初始宽高，用于缩放组件进行缩放计算
+                size: { //记录最初大小
+                    width:0,
+                    height:0
+                },
+                curSize: { //记录当前大小
+                    width:0,
+                    height:0
+                }
+            },
             g : null,
             grid : { //方格大小
                 width : 0,
@@ -114,6 +124,23 @@
             this.appendLeftAttentionNote(params);
             this.drawZkzhPanel();
             this.drawSubjectPanel();
+            this.initSize();
+        },
+        /**
+         * 初始化宽高
+         * 该方法主要记录最初的元素宽高，用于缩放控制，
+         * 每一个元素都应该实现该方法
+         */
+        initSize: function() {
+            var g = this.settings.g;
+            //记录元素最初的宽高
+            var box = g.getBBox();
+            this.settings.resize.size = {
+                width: box.width,
+                height: box.height
+            };
+
+            this.settings.resize.curSize = $.extend(true, {}, this.settings.resize.size);
         },
         /**
          * 编辑基本信息元素
@@ -520,6 +547,7 @@
             g.appendChild(rect);
             row.index++;
         },
+
         //注意事项
         drawAttentionNote : function(parentG) {
             var constant = $.answerSheet.settings.constant;
@@ -562,25 +590,25 @@
             if(this.settings.components.select == null) {
                 this.settings.components.select = $.elementSelect.newInstance();
             }
-            this.settings.components.select.enable(this.settings.editTarget);
+            this.settings.components.select.enable(this);
 
             //拖动
             if(this.settings.components.drag == null) {
                 this.settings.components.drag = $.elementDrag.newInstance();
             }
-            this.settings.components.drag.enable(this.settings.editTarget);
+            this.settings.components.drag.enable(this);
 
             //resize
             if(this.settings.components.resize == null) {
                 this.settings.components.resize = $.elementResize.newInstance();
             }
-            this.settings.components.resize.enable(this.settings.editTarget);
+            this.settings.components.resize.enable(this);
 
             //右键菜单
             if(this.settings.components.contextMenu == null) {
                 this.settings.components.contextMenu = $.elementContextMenu.newInstance();
             }
-            this.settings.components.contextMenu.enable(this.settings.editTarget);
+            this.settings.components.contextMenu.enable(this);
         }
     };
 })(jQuery);

@@ -54,34 +54,46 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                <div class="col-sm-12">
-                    <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="userName" value="userName"> 姓名
-                    </label>
-                    <label>
-                        <input type="checkbox" name="className" value="className"> 班级
-                    </label>
-                    <label>
-                        <input type="checkbox" name="filling" value="filling"> 正误填涂
-                    </label>
-                    <label>
-                        <input type="checkbox" name="absent" value="absent"> 缺考标记
-                    </label>
-                    </div>
-                </div>
+                        <div class="col-sm-12">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="userName" value="userName"> 姓名
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="className" class='uncheck' value="className"> 班级
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="filling" value="filling"> 正误填涂
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="absent" value="absent"> 缺考标记
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="sheetType" class='uncheck' value="sheetType"> 试卷类型
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
-                <div class="col-sm-12">
-                    <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="attentionNote" value="attentionNote">
-                            <a class="attentionNoteBtn" href="javascript:void(0)"
-                                data-toggle="popover" data-title="" data-content="修改"
-                                data-container="body" data-placement="top">注意事项</a>
-                    </label>
-                </div>
-                </div>
+                        <div class="col-sm-12">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="subject" class='uncheck' value="subject"> 科目
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="barCode" class='uncheck' value="barCode"> 条形码区
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="seatNo" class='uncheck' value="seatNo"> 座位号
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="attentionNote" value="attentionNote">
+                                        <a class="attentionNoteBtn" href="javascript:void(0)"
+                                            data-toggle="tooltip" data-container="body"
+                                            data-placement="top" title="修改">注意事项</a>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
