@@ -134,7 +134,7 @@
             var defs = $(svg).find('defs');
             if(defs.length == 0) {
                 defs = document.createElementNS(constant.SVN_NS, 'defs');
-                $(defs).addClass('element');
+                $(defs).addClass('elements');
                 svg.appendChild(defs);
             }
 

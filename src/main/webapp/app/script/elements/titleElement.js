@@ -126,7 +126,7 @@
 
             var select = this.settings.components.select;
             if(select) {
-                select.reSelectElement(this.settings.text);
+                select.reSelectElement(this.settings.g);
             }
             
             if(isEdit) {

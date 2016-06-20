@@ -72,7 +72,21 @@
             this.initToolTip();
             this.handleClickSvgEvent();
             this.handleRightClickSvgEvent();
+            this.handleCtrlShiftA();
         },
+        /**
+         * 选中所有元素
+         */
+        handleCtrlShiftA: function() {
+        	var sheet = this;
+        	var elements = sheet.settings.elements;
+        	$(document).on('keydown', function(e) {
+        		if(e.ctrlKey && e.keyCode == 65) { //ctrl+a 全选元素控件
+        			$.elementSelect.selectAllElements();
+        		}
+        	})
+        },
+        
         /**
          * 初始化popover提示框
          */

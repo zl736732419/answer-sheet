@@ -22,27 +22,50 @@
          * 针对某一元素启用选中组件
          */
         enable : function(elementObj) {
-            var element = elementObj.settings.editTarget;
-            if(!element) {
+            var g = elementObj.settings.g;
+            if(!g) {
                 throw new Error('错误，当前要选中的目标元素为空!');
             }
             var select = this;
-            $(element).on('click', function() {
-                var selected = select.isSelected(element);
-                if(!selected) {
-                    select.selectElement(element);
-                }
+            $(g).on('click', function(e) {
+            	var selected = select.isSelected(g);
+            	if(select.isCtrlKeyDown(e)) {//多选
+            		if(selected) {
+            			select.unSelectElement(g);
+            		}else {
+            			select.selectElement(g, false);
+            		}
+            	}else {
+            		if(!selected) {
+            			select.selectElement(g, true);
+            		}
+            	}
                 return false; //阻止事件向上传递设置了svg画布点击事件
             });
         },
         /**
-         * 获取元素的当前选中状态：选中、未选中
-         * @param element
+         * 选择元素时是否按下了ctrl键表示是否多选
+         * 
          */
-        isSelected : function(element) {
+        isCtrlKeyDown: function(e) {
+        	if(e == null || e == undefined) { //如果没有鼠标事件默认为单选
+        		return false;
+        	}
+        	
+        	if(e.ctrlKey) { //按下ctrl键
+        		return true;
+        	}
+        	
+        	return false;
+        },
+        /**
+         * 获取元素的当前选中状态：选中、未选中
+         * @param g
+         */
+        isSelected : function(g) {
             var cls = this.settings.cls.substring(1);
             var selected = false;
-            if($(element).parent().hasClass(cls)) { //g
+            if($(g).hasClass(cls)) { //g
                 selected = true;
             }
 
@@ -50,27 +73,31 @@
         },
         /**
          * 取消对元素的选中状态
-         * @param element
+         * @param g
          */
-        unSelectElement : function(element) {
+        unSelectElement : function(g) {
             var cls = this.settings.cls.substring(1);
-            var g = $(element).parent()[0];
             $(g).removeClass(cls);
             $(g).find('.point').css({
                 display: 'none'
             });
-            this.removeBorder(element);
+            this.removeBorder(g);
         },
         /**
          * 选中某一个元素
-         * @param element
+         * @param g
+         * @param clear 是否清空之前选中状态
          */
-        selectElement : function(element) {
+        selectElement : function(g, clear) {
+        	if(clear) {
+        		var elements = $('.element.selected').removeClass('selected');
+        		$(elements).find('.point').css({'display': 'none'});
+        		$(elements).find(this.settings.borderCls).remove();
+        	}
             var cls = this.settings.cls.substring(1);
-            var g = $(element).parent()[0];
             $(g).addClass(cls);
             //绘制边框线
-            this.addBorder(element);
+            this.addBorder(g);
             $(g).find('.point').css({
                 display: 'block'
             });
@@ -78,21 +105,20 @@
         /**
          * 重新选中，更新之前选中状态
          * 当改变元素大小时需要调用该方法
-         * @param element
+         * @param g
          */
-        reSelectElement : function(element) {
-            if(this.isSelected(element)) { //只有在选中的时候才会更新之前选中状态
-                this.unSelectElement(element);
-                this.selectElement(element);
+        reSelectElement : function(g) {
+            if(this.isSelected(g)) { //只有在选中的时候才会更新之前选中状态
+                this.unSelectElement(g);
+                this.selectElement(g, true);
             }
         },
         /**
          * 选中元素后绘出边框
-         * @param element
+         * @param g
          */
-        addBorder : function(element) {
-            var g = $(element).parent()[0];
-            var box = $(element)[0].getBBox();
+        addBorder : function(g) {
+            var box = $(g)[0].getBBox();
             var d = "M " + box.x + " " + box.y + " h " + box.width + " v " + box.height
                 + " h -" + box.width + " v -" +box.height + " z";
             var path = $.uiBuilder.drawPath(d, '#04c', 1);
@@ -101,10 +127,20 @@
         },
         /**
          * 取消选中后移除边框
-         * @param element
+         * @param g
          */
-        removeBorder : function(element) {
-            $(element).parent().find(this.settings.borderCls).remove();
-        }
+        removeBorder : function(g) {
+            $(g).find(this.settings.borderCls).remove();
+        },
+        /**
+         * 选中所有元素
+         */
+        selectAllElements: function() {
+        	var element = null;
+        	$('.element').each(function(index, item) {
+        		element = $(item)[0].obj; //g.obj
+        		element.settings.components.select.selectElement($(item)[0]);
+        	});
+        },
     };
 })(jQuery);

@@ -47,7 +47,7 @@
                     $(document).off('mousemove');
                     $(document).off('mouseup');
 
-                    select.selectElement(element);
+//                    select.selectElement(element);
                 });
 
             });
