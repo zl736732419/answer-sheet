@@ -67,13 +67,14 @@
                     toastr.warning('创建考生信息必须选择事项!');
                     return;
                 }
+                var baseInfoElement = $.baseInfoElement.newInstance();
+                baseInfoElement.loadElement(attentions);
+                $.answerSheet.settings.elements.push(baseInfoElement);
                 if(dialog.settings.element) {
                     //编辑操作
-                    //TODO
-                }else {
-                    var baseInfoElement = $.baseInfoElement.newInstance();
-                    baseInfoElement.loadElement(attentions);
-                    $.answerSheet.settings.elements.push(baseInfoElement);
+                	$.answerSheet.removeElement(dialog.settings.element);
+                	var transform = $(dialog.settings.element.settings.editTarget).attr('transform');
+                	$(baseInfoElement.settings.editTarget).attr('transform', transform);
                 }
                 dialog.hide();
             });

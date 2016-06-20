@@ -141,9 +141,7 @@
                 [{
                     text: "清空",
                     func: function() {
-                        var elements = sheet.settings.elements;
-                        elements.length = 0;
-                        $('svg').find('.element').remove();
+                    	sheet.clearAllElement();
                     }
                 }]
             ];
@@ -155,6 +153,32 @@
          */
         containsSelectedElement: function() {
             return $('svg').find('.selected').length > 0;
+        },
+        /**
+         * 清空所有元素
+         */
+        clearAllElement : function() {
+        	var sheet = this;
+        	var elements = sheet.settings.elements;
+            elements.length = 0;
+            $('svg').find('.element').remove();
+        },
+        /**
+         * 删除指定的元素
+         * @param element
+         */
+        removeElement : function(element) {
+        	var sheet = this;
+        	var elements = sheet.settings.elements;
+        	var index = _.indexOf(elements, element);
+        	elements.splice(index, 1);
+        	var uis = $('svg').find('.element');
+        	for(var i = 0; i < uis.length; i++) {
+        		if(uis[i] == element.settings.g) {
+        			uis[i].remove();
+        			break;
+        		}
+        	}
         }
     };
 })(jQuery);

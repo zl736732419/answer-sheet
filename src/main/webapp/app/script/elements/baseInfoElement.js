@@ -122,8 +122,10 @@
             this.appendContainerRect();
             this.appendSeperatorLine();
             this.appendLeftAttentionNote(params);
-            this.drawZkzhPanel();
-            this.drawSubjectPanel();
+            this.drawZkzhPanel(params);
+            if(_.indexOf(params, 'subject') != -1) {
+            	this.drawSubjectPanel();
+            }
             this.initSize();
         },
         /**
@@ -143,12 +145,6 @@
             this.settings.resize.curSize = $.extend(true, {}, this.settings.resize.size);
         },
         /**
-         * 编辑基本信息元素
-         */
-        editElement : function() {
-            //TODO
-        },
-        /**
          * 绘制左侧注意事项和考生基本信息
          */
         appendLeftAttentionNote : function(params) {
@@ -163,7 +159,9 @@
             for(var i = 0; i < params.length; i++) {
                 fnName = 'element.draw' + _.capitalize(params[i].substring(0, 1)) + params[i].substring(1);
                 drawFn = eval('(' + fnName + ')');
-                drawFn.apply(element, [g]);
+                if(drawFn != undefined) {
+                	drawFn.apply(element, [g]);
+                }
             }
         },
         /**
@@ -285,7 +283,7 @@
             $(g).attr('transform', translateStr);
         },
         //绘制右侧准考证号面板
-        drawZkzhPanel : function() {
+        drawZkzhPanel : function(params) {
             var parentG = this.settings.g;
             var constant = $.answerSheet.settings.constant;
             //右侧内容面板宽度
@@ -293,7 +291,11 @@
             var zkzhPanel = this.settings.zkzhPanel;
             //右侧占3/4控件宽度的准考证号内容面板
             var width = content.width - this.settings.row.width;
-            var panelWidth = (width - zkzhPanel.marginLeft*2) * 3 / 4; //科目面板占剩下的1/4
+            
+            var panelWidth = (width - zkzhPanel.marginLeft*2); //科目面板占剩下的1/4
+            if(_.indexOf(params, 'subject') != -1) { //如果存在科目面板
+            	panelWidth *= (3/4);
+            }
             //右侧准考证号面板左上角坐标
             var x = this.settings.row.width;
             var y = 0;
@@ -379,7 +381,22 @@
          * 初始化元素点击事件
          */
         initEvent : function(parentG) {
-            //TODO add event handle code...
+        	this.handleDoubleClickEvent();
+        },
+        /**
+         * 双击编辑事件
+         */
+        handleDoubleClickEvent: function() {
+        	var element = this;
+            $(this.settings.editTarget).on('dblclick', function() {
+                element.editElement();
+            });
+        },
+        /**
+         * 编辑元素
+         */
+        editElement : function() {
+            $.baseInfoDialog.loadDialog(this);
         },
         /**
          * 绘制用户名

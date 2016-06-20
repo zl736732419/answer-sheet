@@ -1,11 +1,10 @@
 /**
+ * 答题卡顶部名称组件
+ * 调用方式： $.titleElement.newInstance().loadElement();
+ * 
  * Created by zhenglian
  * Date: 2016/5/5 0005
  * Time: 下午 4:41
- */
-/**
- * 答题卡顶部名称组件
- * 调用方式： $.titleElement.newInstance().loadElement();
  */
 (function($) {
     $.titleElement = {
