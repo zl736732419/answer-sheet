@@ -43,7 +43,8 @@
                 },{
                     text: "删除",
                     func: function() {
-                        var elements = $.answerSheet.settings.elements;
+                    	var $answerSheet = $.examPapers.settings.curSheet;
+                        var elements = $answerSheet.settings.elements;
                         for(var i = 0; i < elements.length; i++) {
                             if(elements[i].settings.editTarget == element) {
                                 elements.splice(i, 1);

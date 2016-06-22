@@ -41,7 +41,8 @@
 		 * 初始化参数值
 		 */
 		initParams: function(){
-			this.settings.svg = $.answerSheet.settings.svg;
+			var $answerSheet = $.examPapers.settings.curSheet;
+			this.settings.svg = $answerSheet.settings.svg;
 			//TODO init other params
 		},
 		/**

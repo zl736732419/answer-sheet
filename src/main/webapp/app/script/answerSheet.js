@@ -10,14 +10,19 @@
         settings : {
             subject: $.subject.basic, //默认是语文
             ui : '.answerSheetSvg',
+            sheetDiv: null,
             svg : null, //通过ui实例化的svg对象,为了预览方便，后续预览操作直接将svg作为参数传递过来
             defaultSetting: null,
-            elements : [], //已经添加的内容列表
-            constant : {//配置一些常量域
-                SVN_NS : 'http://www.w3.org/2000/svg',
-                LINK_NS : 'http://www.w3.org/1999/xlink'
-            }
+            answerSheetPanel: '.answerSheetPanel',
+            elements : [] //已经添加的内容列表
         },
+        /**
+         * 创建一张新的题卡
+         */
+        newInstance : function() {
+            return $.extend(true, {}, this);
+        },
+
         /**
          * 初始化加载答题卡，入口函数
          */
@@ -45,10 +50,29 @@
             if(svg) {
                 this.settings.svg = svg;
             }else {
-                this.settings.svg = $(this.settings.ui)[0];
+                this.settings.svg = this.createNewSVG();
             }
 
             this.settings.svg.obj = this;
+        },
+        /**
+         * 创建新的svg画布
+         */
+        createNewSVG: function() {
+            var constant = $.utils.settings.constant;
+            var svgCls = this.settings.ui;
+            var svg = document.createElementNS(constant.SVG_NS, 'svg');
+            $(svg).addClass(svgCls.substring(1))
+                .attr('xmlns', constant.SVG_NS)
+                .attr('xmlns:xlink', constant.LINK_NS);
+
+            var $answerSheetDiv = $('<div>', {'class': 'answerSheetDiv'});
+            $answerSheetDiv.append(svg);
+            
+            $(this.settings.answerSheetPanel).append($answerSheetDiv);
+            this.settings.sheetDiv = $answerSheetDiv;
+            this.settings.svg = svg;
+            return svg;
         },
         /**
          * 渲染答题卡内容

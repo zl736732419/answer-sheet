@@ -83,7 +83,8 @@
          * 初始化该组件需要用到的参数
          */
         initParams : function() {
-            this.settings.svg = $.answerSheet.settings.svg;
+        	var $answerSheet = $.examPapers.settings.curSheet;
+            this.settings.svg = $answerSheet.settings.svg;
             $.extend(this.settings.grid,$.defaultSettingA4.grid);
             $.extend(this.settings.content,$.defaultSettingA4.content);
             var contentWidth = this.settings.content.width;
@@ -106,10 +107,9 @@
             if(params.length == 0) {
                 throw new Error('创建失败,缺少基本信息元素!');
             }
-
-            var constant = $.answerSheet.settings.constant;
+            var constant = $.utils.settings.constant;
             var svg = this.settings.svg;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             $(g).addClass("element");
             g.obj = this;
@@ -149,8 +149,8 @@
          */
         appendLeftAttentionNote : function(params) {
             var element = this;
-            var constant = $.answerSheet.settings.constant;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+            var constant = $.utils.settings.constant;
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             this.settings.g.appendChild(g);
 
@@ -187,7 +187,7 @@
         //绘制科目面板
         drawSubjectPanel : function() {
             var parentG = this.settings.g;
-            var constant = $.answerSheet.settings.constant;
+            var constant = $.utils.settings.constant;
             var subjectPanel = this.settings.subjectPanel;
             //右侧内容面板宽度
             var content = this.settings.content;
@@ -200,7 +200,7 @@
             var panelWidth = width - zkzhPanel.marginLeft - zkzhPanelWidth
                 - subjectPanel.marginLeft * 2;
             var panelHeight = content.height - subjectPanel.marginTop * 2;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             parentG.appendChild(g);
             var x = this.settings.row.width;
@@ -208,7 +208,7 @@
             //绘制科目标题面板
             $.uiBuilder.drawRectAndCenterText(x, y, panelWidth, subjectPanel.titleHeight,'科目',g);
             //绘制科目内容面板
-            var contentPanelG = document.createElementNS(constant.SVN_NS, 'g');
+            var contentPanelG = document.createElementNS(constant.SVG_NS, 'g');
             $(contentPanelG).attr('transform', 'translate(0, 0)');
             g.appendChild(contentPanelG);
 
@@ -226,14 +226,14 @@
         },
         //根据$.subject渲染科目内容,居中显示
         renderSubjects : function(panelWidth, panelHeight, parentG) {
-            var constant = $.answerSheet.settings.constant;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+        	var constant = $.utils.settings.constant;
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             parentG.appendChild(g);
 
             var subjectPanel = this.settings.subjectPanel;
             var row = this.settings.row;
-            var curSubject = $.answerSheet.settings.subject.value;
+            var curSubject = $answerSheet.settings.subject.value;
             var grid = this.settings.grid;
             var subjects = $.subject;
 
@@ -285,7 +285,7 @@
         //绘制右侧准考证号面板
         drawZkzhPanel : function(params) {
             var parentG = this.settings.g;
-            var constant = $.answerSheet.settings.constant;
+            var constant = $.utils.settings.constant;
             //右侧内容面板宽度
             var content = this.settings.content;
             var zkzhPanel = this.settings.zkzhPanel;
@@ -300,7 +300,7 @@
             var x = this.settings.row.width;
             var y = 0;
             //通过g translate来调整最终位置
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             parentG.appendChild(g);
             //绘制准考证号面板头部信息==============准考证号=============
@@ -317,8 +317,8 @@
          * 绘制准考证号面板标题
          */
         appendZkzhHeaderPanel : function(x, y, width, parentG) {
-            var constant = $.answerSheet.settings.constant;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+        	var constant = $.utils.settings.constant;
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             parentG.appendChild(g);
 
@@ -333,8 +333,8 @@
          *
          */
         appendZkzhFillingPanel : function(x, y, width, parentG) {
-            var constant = $.answerSheet.settings.constant;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+        	var constant = $.utils.settings.constant;
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             parentG.appendChild(g);
 
@@ -348,8 +348,8 @@
         },
         //针对每一位准考证号创建对应的填涂区域
         createItemG : function(x, y, index, itemWidth, parentG) {
-            var constant = $.answerSheet.settings.constant;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+        	var constant = $.utils.settings.constant;
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             parentG.appendChild(g);
 
@@ -412,8 +412,8 @@
         drawFilling : function(parentG) {
             var row = this.settings.row;
             var splitWidth = row.width / 3; //正误填涂分割线距离
-            var constant = $.answerSheet.settings.constant;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+            var constant = $.utils.settings.constant;
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             parentG.appendChild(g);
 
@@ -536,9 +536,9 @@
         },
         //缺考标记
         drawAbsent : function(parentG) {
-            var constant = $.answerSheet.settings.constant;
+        	var constant = $.utils.settings.constant;
             var grid = this.settings.grid;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             parentG.appendChild(g);
 
@@ -567,8 +567,8 @@
 
         //注意事项
         drawAttentionNote : function(parentG) {
-            var constant = $.answerSheet.settings.constant;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+        	var constant = $.utils.settings.constant;
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             parentG.appendChild(g);
 
@@ -587,8 +587,8 @@
 
         },
         drawTextField : function(text, parentG) {
-            var constant = $.answerSheet.settings.constant;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+        	var constant = $.utils.settings.constant;
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             parentG.appendChild(g);
 

@@ -58,6 +58,7 @@
          */
         handleOkEvent : function() {
             var dialog = this;
+            var $answerSheet = $.examPapers.settings.curSheet;
             $(this.settings.ui).find(this.settings.btns.ok).off('click').on('click', function() {
                 var attentions = [];
                 $(dialog.settings.ui).find('input[type=checkbox]:checked').each(function(index, item) {
@@ -69,10 +70,10 @@
                 }
                 var baseInfoElement = $.baseInfoElement.newInstance();
                 baseInfoElement.loadElement(attentions);
-                $.answerSheet.settings.elements.push(baseInfoElement);
+                $answerSheet.settings.elements.push(baseInfoElement);
                 if(dialog.settings.element) {
                     //编辑操作
-                	$.answerSheet.removeElement(dialog.settings.element);
+                	$answerSheet.removeElement(dialog.settings.element);
                 	var transform = $(dialog.settings.element.settings.editTarget).attr('transform');
                 	$(baseInfoElement.settings.editTarget).attr('transform', transform);
                 }

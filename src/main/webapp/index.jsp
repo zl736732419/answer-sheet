@@ -75,9 +75,11 @@
 	<!--答题卡内容面板-->
 	<div class="answerSheetPanel">
 		<!--定义试卷内容-->
+		<!--
 		<svg class="answerSheetSvg" xmlns="http://www.w3.org/2000/svg"
 			xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="300">
 		</svg>
+		-->
 	</div>
 	<div class="bottom"
 		style="height: 100px; background-color: transparent;"></div>
@@ -139,24 +141,9 @@
 <script type="text/javascript" src="app/script/dialog/titleDialog.js"></script>
 <script type="text/javascript" src="app/script/dialog/baseInfoDialog.js"></script>
 <script type="text/javascript" src="app/script/dialog/updateAttentionNoteDialog.js"></script>
-
-<script type="text/javascript">
-	$(function() {
-		//初始化toastr
-		if (typeof toastr != "undefined") {
-			toastr.options = {
-				"closeButton" : true, //是否显示关闭按钮
-				"positionClass" : "toast-top-center",//弹出窗的位置
-				"timeOut" : "2000", //展现时间
-			};
-		}
-
-		var defaultSetting = null;
-		var svg = null;
-		//var title = '2016年南山区9年级下学期期末语文答题卡';
-		$.answerSheet.loadAnswerSheet(defaultSetting, svg);
-		$.headerEvent.loadHeaderToolbar();
-	});
-</script>
+<!--整科所有答题卡集合对象-->
+<script type="text/javascript" src="app/script/examPapers.js"></script>
+<!--页面入口-->
+<script type="text/javascript" src="app/script/main.js"></script>
 
 </html>

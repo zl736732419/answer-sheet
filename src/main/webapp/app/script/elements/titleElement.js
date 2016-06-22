@@ -50,7 +50,8 @@
          * 初始化该组件需要用到的参数
          */
         initParams : function() {
-            this.settings.svg = $.answerSheet.settings.svg;
+        	var $answerSheet = $.examPapers.settings.curSheet;
+            this.settings.svg = $answerSheet.settings.svg;
             //获取题目的初始配置信息
             this.settings.data.y = $.defaultSettingA4.title.y;
         },
@@ -67,14 +68,14 @@
          */
         createElement : function(params) {
             this.settings.element = this;
-            var constant = $.answerSheet.settings.constant;
+            var constant = $.utils.settings.constant;
             var svg = this.settings.svg;
             var data = this.settings.data;
-            var text = document.createElementNS(constant.SVN_NS, 'text');
+            var text = document.createElementNS(constant.SVG_NS, 'text');
             text.onselectstart = function() { //定义文本不可选中
                 return false;
             };
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             g.appendChild(text);
             $(g).addClass('element');
             var uuid = $.utils.randomUUID();

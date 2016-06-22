@@ -4,13 +4,21 @@
   background-color: #ccc;
 }
 
+.answerSheetDiv {
+	margin-top: 30px;
+	display: inline-block;
+}
+
+.answerSheetDiv.selected {
+	box-shadow: 0 0 10px #5bc0de;
+}
+
 .bottom {
 	background-color: #ccc !important;
 }
 
 .answerSheetPanel .answerSheetSvg {
   background-color: white;
-  margin-top: 20px;
 }
 .answerSheetPanel .answerSheetSvg .element:hover {
   cursor: default;

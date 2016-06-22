@@ -338,8 +338,8 @@
          */
         drawEightPoints : function(element) {
             var parentG = $(element).parent()[0];
-            var constant = $.answerSheet.settings.constant;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+            var constant = $.utils.settings.constant;
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             $(g).addClass('pointerG');
             this.settings.pointG = g;

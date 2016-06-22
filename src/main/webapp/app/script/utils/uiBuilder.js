@@ -16,8 +16,8 @@
          * @param fill
          */
         drawRect : function(x, y, width, height, fill, fillColor) {
-            var constant = $.answerSheet.settings.constant;
-            var rect = document.createElementNS(constant.SVN_NS, "rect");
+        	var constant = $.utils.settings.constant;
+            var rect = document.createElementNS(constant.SVG_NS, "rect");
             $(rect).attr('x', x)
                 .attr('y', y)
                 .attr('width', width)
@@ -33,8 +33,8 @@
         },
         //绘制矩形框，其中包含居中的文本
         drawRectAndCenterText : function(x, y, width, height, text, parentG) {
-            var constant = $.answerSheet.settings.constant;
-            var g = document.createElementNS(constant.SVN_NS, 'g');
+        	var constant = $.utils.settings.constant;
+            var g = document.createElementNS(constant.SVG_NS, 'g');
             parentG.appendChild(g);
             //绘制矩形
             var rect = this.drawRect(x, y, width, height);
@@ -47,8 +47,8 @@
         },
         //绘制路径
         drawPath : function(pathStr, color, size) {
-            var constant = $.answerSheet.settings.constant;
-            var path = document.createElementNS(constant.SVN_NS, 'path');
+        	var constant = $.utils.settings.constant;
+            var path = document.createElementNS(constant.SVG_NS, 'path');
             $(path).attr('d', pathStr)
                 .attr('stroke', color)
                 .attr('stroke-width', size)
@@ -66,8 +66,8 @@
          * @returns {Element}
          */
         drawEllipse : function(cx, cy, rx, ry, size) {
-            var constant = $.answerSheet.settings.constant;
-            var ellipse = document.createElementNS(constant.SVN_NS, 'ellipse');
+        	var constant = $.utils.settings.constant;
+            var ellipse = document.createElementNS(constant.SVG_NS, 'ellipse');
             $(ellipse).attr('cx', cx)
                 .attr('cy', cy)
                 .attr('rx', rx)
@@ -86,8 +86,8 @@
          * @param fill
          */
         drawCircle : function(cx, cy, r, fill, fillColor) {
-            var constant = $.answerSheet.settings.constant;
-            var circle = document.createElementNS(constant.SVN_NS, 'circle');
+        	var constant = $.utils.settings.constant;
+            var circle = document.createElementNS(constant.SVG_NS, 'circle');
             $(circle).attr('cx', cx)
                 .attr('cy', cy)
                 .attr('r', r)
@@ -109,11 +109,11 @@
          * @param outerColor
          */
         drawCircleRadialGradient : function(cx, cy, r, innerColor, outerColor) {
-            var constant = $.answerSheet.settings.constant;
+        	var constant = $.utils.settings.constant;
             var gradientId = this.drawRadialGradient(innerColor, outerColor);
             var fill = 'url(' + gradientId + ')';
 
-            var circle = document.createElementNS(constant.SVN_NS, 'circle');
+            var circle = document.createElementNS(constant.SVG_NS, 'circle');
             $(circle).attr('cx', cx)
                 .attr('cy', cy)
                 .attr('r', r)
@@ -128,12 +128,13 @@
          */
         drawRadialGradient : function(innerColor, outerColor) {
             var gradientId = $.utils.randomUUID();
-            var constant = $.answerSheet.settings.constant;
-            var radiusGradient = document.createElementNS(constant.SVN_NS, 'radialGradient');
-            var svg = $.answerSheet.settings.svg;
+            var constant = $.utils.settings.constant;
+            var radiusGradient = document.createElementNS(constant.SVG_NS, 'radialGradient');
+            var $answerSheet = $.examPapers.settings.curSheet;
+            var svg = $answerSheet.settings.svg;
             var defs = $(svg).find('defs');
             if(defs.length == 0) {
-                defs = document.createElementNS(constant.SVN_NS, 'defs');
+                defs = document.createElementNS(constant.SVG_NS, 'defs');
                 $(defs).addClass('elements');
                 svg.appendChild(defs);
             }
@@ -141,11 +142,11 @@
             $(radiusGradient).attr('id', gradientId)
                 .attr('fx', '70%')
                 .attr('fy', '60%');
-            var start = document.createElementNS(constant.SVN_NS, 'stop');
+            var start = document.createElementNS(constant.SVG_NS, 'stop');
             $(start).attr('offset', '10%')
                 .attr('stop-color', innerColor);
             radiusGradient.appendChild(start);
-            var stop = document.createElementNS(constant.SVN_NS, 'stop');
+            var stop = document.createElementNS(constant.SVG_NS, 'stop');
             $(stop).attr('offset', '80%')
                 .attr('stop-color', outerColor);
             radiusGradient.appendChild(stop);
@@ -166,9 +167,9 @@
             if(fontSize == undefined || isNaN(fontSize)) {
                 fontSize = 15;
             }
-            var constant = $.answerSheet.settings.constant;
+            var constant = $.utils.settings.constant;
             //绘制准考证号文字标题
-            var text = document.createElementNS(constant.SVN_NS, "text");
+            var text = document.createElementNS(constant.SVG_NS, "text");
             $(text).attr('x', x).attr('y', y);
             text.onselectstart = function() { //定义文本不可选中
                 return false;
@@ -182,8 +183,8 @@
             return text;
         },
         drawLine : function(x1, y1, x2, y2) {
-           var constant = $.answerSheet.settings.constant;
-           var line = document.createElementNS(constant.SVN_NS, "line");
+        	var constant = $.utils.settings.constant;
+           var line = document.createElementNS(constant.SVG_NS, "line");
            $(line).attr('x1', x1)
                .attr('y1', y1)
                .attr('x2', x2)
@@ -211,8 +212,8 @@
             if(!fontSize) {
                 fontSize = 15;
             }
-            var constant = $.answerSheet.settings.constant;
-            var textUI = document.createElementNS(constant.SVN_NS, "text");
+            var constant = $.utils.settings.constant;
+            var textUI = document.createElementNS(constant.SVG_NS, "text");
             $(textUI).attr('x', x)
                 .attr('y', y)
                 .attr('font-size', fontSize)
@@ -226,7 +227,7 @@
             for(var i = 0; i < text.length; i++) {
                 label += text[i];
                 if(i % num == 0 && i != 0) {
-                    tspan = document.createElementNS(constant.SVN_NS, "tspan");
+                    tspan = document.createElementNS(constant.SVG_NS, "tspan");
                     $(tspan).attr('x', x)
                         .attr('y', y + ((fontSize + padding) * index++));
                     tspan.textContent = label;
@@ -236,7 +237,7 @@
             }
 
             if(label != '') {
-                tspan = document.createElementNS(constant.SVN_NS, "tspan");
+                tspan = document.createElementNS(constant.SVG_NS, "tspan");
                 $(tspan).attr('x', x)
                     .attr('y', y + ((fontSize + padding) * index++));
                 tspan.textContent = label;

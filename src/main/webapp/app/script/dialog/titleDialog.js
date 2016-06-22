@@ -92,7 +92,8 @@
             }else {
                 var titleElement = $.titleElement.newInstance();
                 titleElement.loadElement(params);
-                $.answerSheet.settings.elements.push(titleElement);
+                var $answerSheet = $.examPapers.settings.curSheet;
+                $answerSheet.settings.elements.push(titleElement);
             }
 
         },
