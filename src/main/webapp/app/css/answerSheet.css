@@ -1,9 +1,16 @@
 /*答题卡样式*/
 .answerSheetPanel {
   text-align: center;
+  background-color: #ccc;
 }
+
+.bottom {
+	background-color: #ccc !important;
+}
+
 .answerSheetPanel .answerSheetSvg {
   background-color: white;
+  margin-top: 20px;
 }
 .answerSheetPanel .answerSheetSvg .element:hover {
   cursor: default;
