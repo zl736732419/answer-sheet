@@ -2,6 +2,7 @@
 .answerSheetPanel {
   text-align: center;
   background-color: #ccc;
+  padding-bottom: 100px;
 }
 
 .answerSheetDiv {
@@ -11,10 +12,6 @@
 
 .answerSheetDiv.selected {
 	box-shadow: 0 0 10px #5bc0de;
-}
-
-.bottom {
-	background-color: #ccc !important;
 }
 
 .answerSheetPanel .answerSheetSvg {

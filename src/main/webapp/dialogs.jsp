@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!--dialog页面-->
+
+
+
 <!--标题配置框-->
 <div class="modal fade" id="titleDialog" tabindex="-1" role="dialog" data-backdrop="static"
      aria-labelledby="myModalLabel">
