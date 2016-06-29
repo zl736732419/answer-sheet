@@ -15,11 +15,12 @@
 		 * 创建一张新答题卡
 		 */
 		createNewAnswerSheet : function() {
-			var defaultSetting = $.defaultSettingA4;
+			var defaultSetting = $.defaultSetting;
 			var $answerSheet = $.answerSheet.newInstance();
+			$.examPapers.settings.sheets.push($answerSheet);
+			$answerSheet.settings.index = this.getSheetIndex($answerSheet);
 			$answerSheet.loadAnswerSheet(defaultSetting, null);
 
-			$.examPapers.settings.sheets.push($answerSheet);
 			$.examPapers.settings.curSheet = $answerSheet;
 			this.activeCurSheet();
 		},
@@ -28,13 +29,28 @@
 		 */
 		activeCurSheet: function() {
 			var curSheet = this.settings.curSheet;
-			var $sheetDiv = curSheet.settings.sheetDiv;
+			this.activeSheet(curSheet);
+		},
+		/**
+		 * 选中指定的一张题卡
+		 * @param sheet
+		 */
+		activeSheet : function(sheet){
+			var $sheetDiv = sheet.settings.sheetDiv;
 			if($sheetDiv.hasClass('selected')) {
 				return;
 			}
 			
+			this.settings.curSheet = sheet;
 			$(this.settings.answerSheetPanel).find('.selected').removeClass('selected');
 			$sheetDiv.addClass('selected');
+		},
+		/**
+		 * 获取指定题卡的索引位置
+		 * @param sheet
+		 */
+		getSheetIndex: function(sheet) {
+			return this.settings.sheets.indexOf(sheet);
 		}
 	};
 })(jQuery);

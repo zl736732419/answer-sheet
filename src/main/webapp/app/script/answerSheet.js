@@ -11,8 +11,10 @@
             subject: $.subject.basic, //默认是语文
             ui : '.answerSheetSvg',
             sheetDiv: null,
+            index: 0,//当前题卡所在索引
             svg : null, //通过ui实例化的svg对象,为了预览方便，后续预览操作直接将svg作为参数传递过来
             defaultSetting: null,
+            anchorPoint: null,//记录一张题卡上的定位点对象
             answerSheetPanel: '.answerSheetPanel',
             elements : [] //已经添加的内容列表
         },
@@ -28,7 +30,6 @@
          */
         loadAnswerSheet : function(defaultSetting, svg) {
             this.initParams(defaultSetting, svg);
-            this.renderAnswerSheet();
             this.initEvent();
         },
         /**
@@ -37,7 +38,7 @@
          * @param svg
          * @param title
          */
-        initParams : function(defaultSetting, svg, title) {
+        initParams : function(defaultSetting, svg) {
             if(!defaultSetting) {
                 this.settings.defaultSetting = $.defaultSettingA4;
                 if(!this.settings.defaultSetting) {
@@ -54,6 +55,18 @@
             }
 
             this.settings.svg.obj = this;
+            this.renderAnswerSheet();
+            this.initAnchorPoint();
+        },
+        /**
+         * 初始化定位点对象
+         */
+        initAnchorPoint: function() {
+            if(this.settings.anchorPoint == null) {
+                var anchorPoint = $.anchorPoint.newInstance();
+                anchorPoint.loadPoints(this);
+                this.settings.anchorPoint = anchorPoint;
+            }
         },
         /**
          * 创建新的svg画布
@@ -68,8 +81,14 @@
 
             var $answerSheetDiv = $('<div>', {'class': 'answerSheetDiv'});
             $answerSheetDiv.append(svg);
+            var $bottom = $('<div>', {'class': 'bottom'});
             
-            $(this.settings.answerSheetPanel).append($answerSheetDiv);
+
+            var $containerDiv = $('<div>', {'class': 'containerDiv'});
+            $containerDiv.append($answerSheetDiv);
+            $containerDiv.append($bottom);
+            
+            $(this.settings.answerSheetPanel).append($containerDiv);
             this.settings.sheetDiv = $answerSheetDiv;
             this.settings.svg = svg;
             return svg;
@@ -92,7 +111,7 @@
          * 加载svg画布事件
          */
         initEvent : function() {
-            this.initIcheckStyle();
+//            this.initIcheckStyle();
             this.initToolTip();
             this.handleClickSvgEvent();
             this.handleRightClickSvgEvent();
@@ -125,6 +144,7 @@
         },
         /**
          * 将checkbox radiobox转化为icheck 样式
+         * @Deprecated
          */
         initIcheckStyle : function() {
             $('input').iCheck({

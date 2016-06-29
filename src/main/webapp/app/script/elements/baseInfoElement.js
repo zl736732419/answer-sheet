@@ -227,6 +227,7 @@
         //根据$.subject渲染科目内容,居中显示
         renderSubjects : function(panelWidth, panelHeight, parentG) {
         	var constant = $.utils.settings.constant;
+        	var $answerSheet = $.examPapers.settings.curSheet;
             var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
             parentG.appendChild(g);

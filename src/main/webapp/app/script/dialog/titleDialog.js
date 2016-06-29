@@ -78,6 +78,7 @@
          * 更新答题卡题目信息
          */
         createOrUpdate : function() {
+        	var $answerSheet = $.examPapers.settings.curSheet;
             var element = this.settings.element;
             var title = $(this.settings.ui).find(this.settings.title).val();
             var textSize = $(this.settings.ui).find(this.settings.textSize).val();
@@ -86,15 +87,14 @@
                 title : title,
                 textSize : textSize
             };
-
-            if(element) {
-                this.settings.element.renderTitleContent(params, true);
-            }else {
-                var titleElement = $.titleElement.newInstance();
-                titleElement.loadElement(params);
-                var $answerSheet = $.examPapers.settings.curSheet;
-                $answerSheet.settings.elements.push(titleElement);
-            }
+            
+            //如果是编辑就先删除再创建
+            $answerSheet.removeElement(this.settings.element);
+            
+            var titleElement = $.titleElement.newInstance();
+            titleElement.loadElement(params);
+            var $answerSheet = $.examPapers.settings.curSheet;
+            $answerSheet.settings.elements.push(titleElement);
 
         },
         /**

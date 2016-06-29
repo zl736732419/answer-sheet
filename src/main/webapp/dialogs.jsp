@@ -1,8 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!--dialog页面-->
-
-
+<!-- 题卡纸张选择框 -->
+<div class="modal fade" id="settingDialog" tabindex="-1" role="dialog" data-backdrop="static"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">基础设置</h4>
+            </div>
+            <div class="modal-body">
+                <form id="settingForm" class="form-horizontal" action="">
+                    <div class="form-group">
+                        <label for="sheetType" class="col-sm-2 control-label">题卡类型</label>
+                        <div class="col-sm-6">
+                            <select id="sheetType" name="sheetType" class="selectpicker form-control">
+                            	<option value="1">A3</option>
+                            	<option value="2" selected="selected">A4</option>
+                            </select>
+                        </div>
+                        <div class="a3Columns">
+                        	<label>
+                        		<input type="radio" name="a3Column" class="a3Column" value="3" checked>三栏
+                        	</label>
+                        	<label>
+                        		<input type="radio" name="a3Column" class="a3Column" value="2">两栏
+                        	</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pageNum" class="col-sm-2 control-label">题卡页数</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="pageNum" name="pageNum" class="form-control required" value="2" placeholder="请输入字号">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary okBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!--标题配置框-->
 <div class="modal fade" id="titleDialog" tabindex="-1" role="dialog" data-backdrop="static"

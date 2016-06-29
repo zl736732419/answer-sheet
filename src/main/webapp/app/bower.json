@@ -27,6 +27,9 @@
     "lodash": "^4.13.1",
     "jquery-validation": "^1.15.0",
     "toastr": "^2.1.2",
-    "jQuery-smartMenu": "joaoluis/jQuery-smartMenu"
+    "jQuery-smartMenu": "joaoluis/jQuery-smartMenu",
+    "bootstrap-select": "^1.10.0",
+    "font-awesome": "font-awsome#^4.6.3",
+    "jquery.nicescroll": "nicescroll#^3.6.8"
   }
 }

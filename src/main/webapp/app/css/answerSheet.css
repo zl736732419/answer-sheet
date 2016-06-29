@@ -1,13 +1,21 @@
 /*答题卡样式*/
+body {
+	overflow: hidden;
+}
 .answerSheetPanel {
   text-align: center;
   background-color: #ccc;
-  padding-bottom: 100px;
+  width: 100%;
 }
 
 .answerSheetDiv {
 	margin-top: 30px;
 	display: inline-block;
+}
+
+.bottom {
+	height: 100px;
+	background-color: #ccc;
 }
 
 .answerSheetDiv.selected {

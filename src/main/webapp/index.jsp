@@ -15,9 +15,9 @@
 </head>
 <body>
 	<%@include file="headerBar.jsp" %>
-
+	
 	<!--答题卡内容面板-->
-	<div class="answerSheetPanel">
+	<div class="answerSheetPanel as-nicescroll">
 		<!--定义试卷内容-->
 		<!--
 		<svg class="answerSheetSvg" xmlns="http://www.w3.org/2000/svg"

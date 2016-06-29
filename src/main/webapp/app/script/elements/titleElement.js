@@ -22,6 +22,8 @@
                     height:0
                 }
             },
+            nums: 18, //一行包含文字数
+            padding: 10, //行间距
             text : null, //当前题目文本对象，需要在loadElement中创建
             editTarget: null, //用于编辑的元素
             g : null,
@@ -30,7 +32,7 @@
                 y: 0,
                 title : null, //题目文本内容,从answerSheet.settings中获取
                 textColor: '#000',
-                textSize: 40
+                textSize: 30
             },
             components : {
                 select : null, //选中控件
@@ -53,7 +55,8 @@
         	var $answerSheet = $.examPapers.settings.curSheet;
             this.settings.svg = $answerSheet.settings.svg;
             //获取题目的初始配置信息
-            this.settings.data.y = $.defaultSettingA4.title.y;
+            var $anchorPoint = $.defaultSetting.anchorPoint;
+            this.settings.data.y = $anchorPoint.vPadding + $anchorPoint.height*2;
         },
         /**
          * 加载该控件
@@ -63,20 +66,19 @@
            this.initEvent();
            this.editable();
         },
-        /**
-         * 创建文本对象
-         */
-        createElement : function(params) {
-            this.settings.element = this;
+        createElement: function(params) {
+        	var data = this.settings.data;
+            if(params) {
+                var title = params.title;
+                var textSize = params.textSize;
+                data.title = title;
+                data.textSize = Number(textSize);
+            }
+            
+        	this.settings.element = this;
             var constant = $.utils.settings.constant;
             var svg = this.settings.svg;
-            var data = this.settings.data;
-            var text = document.createElementNS(constant.SVG_NS, 'text');
-            text.onselectstart = function() { //定义文本不可选中
-                return false;
-            };
             var g = document.createElementNS(constant.SVG_NS, 'g');
-            g.appendChild(text);
             $(g).addClass('element');
             var uuid = $.utils.randomUUID();
             this.settings.uuid = uuid;
@@ -84,9 +86,14 @@
             g.obj = this;
             this.settings.g = g;
             svg.appendChild(g);
+        	var text = $.uiBuilder.drawMultiLineText(0, 0, data.title, 
+        			this.settings.padding, data.textSize, this.settings.nums, g);
+        	text.onselectstart = function() { //定义文本不可选中
+                return false;
+            };
             this.settings.text = text;
             this.settings.editTarget = this.settings.text;
-            this.renderTitleContent(params, false);
+            this.renderTitleContent();
         },
         //拖动元素时需要更新元素位置坐标
         updatePosition : function(dx, dy){
@@ -102,22 +109,14 @@
          *
          * @param params 传递的最新题目信息，如果为空直接使用settings.data
          */
-        renderTitleContent : function(params, isEdit) {
-            var data = this.settings.data;
-            if(params) {
-                var title = params.title;
-                var textSize = params.textSize;
-                data.title = title;
-                data.textSize = textSize;
-            }
-
+        renderTitleContent : function() {
+        	var data = this.settings.data;
             var text = this.settings.text;
             $(text).attr('x', 0)
             	.attr('y', 0)
             	.attr('dy', 0);
             var g = this.settings.g;
             $(g).attr('transform', 'translate(0, 0)');
-            text.textContent = data.title;
             $(text).css({
                 color: data.textColor,
                 fontSize: data.textSize + 'px',
@@ -130,13 +129,6 @@
                 select.reSelectElement(this.settings.g);
             }
             
-            if(isEdit) {
-            	//如果是编辑，需要重新渲染resize控件
-                $(this.settings.g).find('.point').remove();
-                this.settings.components.select.selectElement(this.settings.editTarget);
-                this.settings.components.resize.enable(this);
-            }
-
             this.initSize();
         },
         /**
@@ -164,15 +156,28 @@
             var y = $(text).attr('y');
             //居中文本信息
             var dy = y - box.y;
-            $(text).attr('dy', dy);
+            var $tspan = $(text).find('tspan');
+            $tspan.attr('dy', dy);
 
             var g = this.settings.g;
             var data = this.settings.data;
-            var parentWidth = $.defaultSettingA4.page.width;
+            var parentWidth = $.defaultSetting.page.width;
             var newX = parseInt(parentWidth - box.width) / 2;
             this.settings.data.x = newX;
             var translateStr = 'translate(' + newX + ',' + (data.y) + ')';
             $(g).attr('transform', translateStr);
+            
+            if($tspan.length > 1) { //只有超过1行文本才会有居中问题
+            	var textWidth = text.getBBox().width;
+            	var tspanWidth = null;
+            	var dx = 0;
+            	for(var i = 0; i < $tspan.length; i++) {
+            		tspanWidth = $tspan[i].textLength.baseVal.value;
+            		dx = (textWidth - tspanWidth) / 2;
+            		$($tspan[i]).attr('dx', dx);
+            	}
+            }
+            
         },
         /**
          * 初始化题目信息事件
@@ -205,16 +210,16 @@
             }
             this.settings.components.select.enable(this);
 
-            //拖动
-            if(this.settings.components.drag == null) {
+            //不允许拖动
+            /*if(this.settings.components.drag == null) {
                 this.settings.components.drag = $.elementDrag.newInstance();
             }
-            this.settings.components.drag.enable(this);
+            this.settings.components.drag.enable(this);*/
 
-            if(this.settings.components.resize == null) {
+            /*if(this.settings.components.resize == null) {
                 this.settings.components.resize = $.elementResize.newInstance();
             }
-            this.settings.components.resize.enable(this);
+            this.settings.components.resize.enable(this);*/
 
             //右键菜单
             if(this.settings.components.contextMenu == null) {

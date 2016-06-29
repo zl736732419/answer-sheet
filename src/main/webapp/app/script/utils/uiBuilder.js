@@ -201,8 +201,9 @@
          * @param padding 每行的间距
          * @param fontSize 字体大小
          * @param num 每行显示的文本数
+         * @param g 容器g
          */
-        drawMultiLineText : function(x, y, text, padding, fontSize, num) {
+        drawMultiLineText : function(x, y, text, padding, fontSize, num, parentG) {
             if(!padding) {
                 padding = 15;
             }
@@ -221,17 +222,29 @@
             textUI.onselectstart = function() { //定义文本不可选中
                 return false;
             };
+            parentG.appendChild(textUI);
             var label = '';
             var tspan = null;
             var index = 0;
+            var tspanHeight = 0;
             for(var i = 0; i < text.length; i++) {
                 label += text[i];
                 if(i % num == 0 && i != 0) {
                     tspan = document.createElementNS(constant.SVG_NS, "tspan");
+                    	
+                    if(index != 0) {
+                    	y = y + ((tspanHeight + padding) * index++);
+                    }else {
+                    	index++;
+                    }
+                    
                     $(tspan).attr('x', x)
-                        .attr('y', y + ((fontSize + padding) * index++));
+                        .attr('y', y);
                     tspan.textContent = label;
                     textUI.appendChild(tspan);
+                    if(tspanHeight == 0) {
+                		tspanHeight = tspan.getBBox().height;
+                	}
                     label = '';
                 }
             }
@@ -239,7 +252,7 @@
             if(label != '') {
                 tspan = document.createElementNS(constant.SVG_NS, "tspan");
                 $(tspan).attr('x', x)
-                    .attr('y', y + ((fontSize + padding) * index++));
+                    .attr('y', y + ((tspanHeight + padding) * index++));
                 tspan.textContent = label;
                 textUI.appendChild(tspan);
             }

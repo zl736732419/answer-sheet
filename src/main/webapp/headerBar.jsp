@@ -8,6 +8,12 @@
 		</a>
 	</div>
 	<ul class="headerList">
+		<li class="headerItem" dialog="settingDialog">
+			<a href="javascript:void(0)">
+				<img src="app/images/header_settings.png" />
+				<span class="answerLabel">基础设置</span>
+			</a>
+		</li>
 		<li class="headerItem" dialog="titleDialog"><a
 			href="javascript:void(0)"> <img src="app/images/header_title.png" />
 				<span class="answerLabel">题卡标题</span>
