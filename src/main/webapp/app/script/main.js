@@ -13,14 +13,13 @@
         };
     }
 
-    
     function render() {
     	initIcheckStyle();
     	initAnswerSheetPanelHeight();
     	initNiceScroll();
     	//var title = '2016年南山区9年级下学期期末语文答题卡';
     	//初始化一张新的题卡,需要根据用户设置的参数进行创建
-    	$.examPapers.createNewAnswerSheet();
+    	$.settingDialog.createAnswerSheet();
         $.headerEvent.loadHeaderToolbar();
         
     }

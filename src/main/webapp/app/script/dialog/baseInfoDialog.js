@@ -7,18 +7,24 @@
  */
 (function($) {
     $.baseInfoDialog = {
+    	
         settings : {
+        	constants: {
+				ZKZH: "zkzh",
+				BAR_CODE: "barCode",
+				QR: 'qr'
+			},
             ui : '#baseInfoDialog',
             userName : 'input[name=userName]',
-            className : 'input[name=className]',
-            zkzh : 'input[name=zkzh]',
-            filling : 'input[name=filling]',
-            absent : 'input[name=absent]',
-            attentionNote : 'input[name=attentionNote]',
+            school : 'input[name=school]',
+            clazzName : 'input[name=clazzName]',
+            filling : 'input[name=filling]', //正误填涂
             subject: 'input[name=subject]',
-            barCode: 'input[name=barCode]',
-            seatNo: 'input[name=seatNo]',
-            sheetType: 'input[name=sheetType]',
+            pageNum: 'input[name=pageNum]',
+            absentAndBreach : 'input[name=absentAndBreach]',
+            studentCode: 'input[name=studentCode]',
+            attentionNote : 'input[name=attentionNote]',
+            zkzhCountPanel: '.zkzhCountPanel',
             uncheck: '.uncheck', //默认不选中的样式
             element : null,
             btns : {
@@ -43,15 +49,32 @@
          */
         renderContent : function() {
             this.initCheckRadio();
-            //TODO add other ...
         },
-
+        /**
+         * 处理准考证号、二维码、条形码切换事件
+         */
+        initStudentCodeEvent: function() {
+        	var dialog = this;
+            $(this.settings.ui).find(this.settings.studentCode).on('ifChecked', function() {
+            	var val = $(this).val();
+            	if(val == dialog.settings.constants.ZKZH) {
+            		$(dialog.settings.zkzhCountPanel).css({
+            			display: 'inline-block'
+            		});
+            	}else {
+            		$(dialog.settings.zkzhCountPanel).css({
+            			display: 'none'
+            		});
+            	}
+            });
+        },
         initCheckRadio : function() {
             $(this.settings.ui).find('input').not(this.settings.uncheck).iCheck('check');
         },
         initEvent : function() {
-            this.handleOkEvent();
+            this.initStudentCodeEvent();
             this.handleUpdateAttentionNote();
+            this.handleOkEvent();
         },
         /**
          * 处理确定按钮事件
@@ -68,17 +91,33 @@
                     toastr.warning('创建考生信息必须选择事项!');
                     return;
                 }
-                var baseInfoElement = $.baseInfoElement.newInstance();
-                baseInfoElement.loadElement(attentions);
-                $answerSheet.settings.elements.push(baseInfoElement);
-                if(dialog.settings.element) {
-                    //编辑操作
-                	$answerSheet.removeElement(dialog.settings.element);
-                	var transform = $(dialog.settings.element.settings.editTarget).attr('transform');
-                	$(baseInfoElement.settings.editTarget).attr('transform', transform);
-                }
+//                var baseInfoElement = $.baseInfoElement.newInstance();
+//                baseInfoElement.loadElement(attentions);
+//                $answerSheet.settings.elements.push(baseInfoElement);
+//                if(dialog.settings.element) {
+//                    //编辑操作
+//                	$answerSheet.removeElement(dialog.settings.element);
+//                	var transform = $(dialog.settings.element.settings.editTarget).attr('transform');
+//                	$(baseInfoElement.settings.editTarget).attr('transform', transform);
+//                }
+                
+                dialog.renderBaseInfoElements(attentions);
+                
+                
                 dialog.hide();
             });
+        },
+        /**
+         * 加载基本信息中存在的元素组件
+         */
+        renderBaseInfoElements: function(attentions) {
+        	if(_.indexOf(attentions, 'subject') != -1) { //科目信息
+        		var subjectElement = $.subjectElement.newInstance();
+                subjectElement.loadElement();
+        	}
+        	
+        	
+        	
         },
         /**
          * 更新注意事项

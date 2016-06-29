@@ -85,8 +85,8 @@
         initParams : function() {
         	var $answerSheet = $.examPapers.settings.curSheet;
             this.settings.svg = $answerSheet.settings.svg;
-            $.extend(this.settings.grid,$.defaultSettingA4.grid);
-            $.extend(this.settings.content,$.defaultSettingA4.content);
+            $.extend(this.settings.grid,$.defaultSetting.grid);
+            $.extend(this.settings.content,$.defaultSetting.content);
             var contentWidth = this.settings.content.width;
             this.settings.row.width = contentWidth / 4;
 
@@ -127,6 +127,10 @@
             	this.drawSubjectPanel();
             }
             this.initSize();
+            
+            //调整控件居中
+            
+            
         },
         /**
          * 初始化宽高
@@ -406,7 +410,7 @@
             this.drawTextField('姓名：', parentG);
         },
         //绘制班级
-        drawClassName : function(parentG) {
+        drawClazzName : function(parentG) {
             this.drawTextField('班级：', parentG);
         },
         //正误填涂
@@ -582,10 +586,7 @@
             rowHeight = row.height * row.index;
             var y = rowHeight - row.bottomPadding - 15;
             var text = $.settings.baseInfo.attentionNote;
-            var textContent = $.uiBuilder.drawMultiLineText(row.leftPadding, y, text);
-
-            g.appendChild(textContent);
-
+            var textContent = $.uiBuilder.drawMultiLineText(row.leftPadding, y, text, null, null, null, g);
         },
         drawTextField : function(text, parentG) {
         	var constant = $.utils.settings.constant;
@@ -610,7 +611,7 @@
             }
             this.settings.components.select.enable(this);
 
-            //拖动
+           /* //拖动
             if(this.settings.components.drag == null) {
                 this.settings.components.drag = $.elementDrag.newInstance();
             }
@@ -620,7 +621,7 @@
             if(this.settings.components.resize == null) {
                 this.settings.components.resize = $.elementResize.newInstance();
             }
-            this.settings.components.resize.enable(this);
+            this.settings.components.resize.enable(this);*/
 
             //右键菜单
             if(this.settings.components.contextMenu == null) {

@@ -16,10 +16,6 @@
             height: 1123,  // 答题卡纸张高度
             pageNum: 2 // 答题卡共几页(一张两面算两页)
         },
-        content : {
-            width : 1387, //内容宽度
-            height: 1905  //内容高度
-        },
         grid : { //填涂方格大小
             width: 25,
             height: 12

@@ -177,6 +177,7 @@
             text.textContent = label;
             $(text).css({
                 color: '#000',
+                'font-family': "'microsoft yahei', 'Open Sans'",
                 fontSize: fontSize + 'px'
             });
 
@@ -207,17 +208,18 @@
             if(!padding) {
                 padding = 15;
             }
+            if(!fontSize) {
+            	fontSize = 15;
+            }
             if(!num) {
                 num = 17;
-            }
-            if(!fontSize) {
-                fontSize = 15;
             }
             var constant = $.utils.settings.constant;
             var textUI = document.createElementNS(constant.SVG_NS, "text");
             $(textUI).attr('x', x)
                 .attr('y', y)
                 .attr('font-size', fontSize)
+                .attr('font-family', "'microsoft yahei', 'Open Sans'")
                 .attr('fill', '#000');
             textUI.onselectstart = function() { //定义文本不可选中
                 return false;

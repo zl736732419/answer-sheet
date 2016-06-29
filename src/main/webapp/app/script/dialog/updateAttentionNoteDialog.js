@@ -8,7 +8,6 @@
         settings : {
             ui : '#updateAttentionNoteDialog',
             form : '#attentionNoteForm',
-            attentionCount : '.attentionCount',
             attentionNote : '.attentionNote',
             btns : {
                 ok : '.okBtn'
@@ -28,7 +27,6 @@
          */
         renderContent : function() {
             this.renderAttentionNote();
-            this.updateAttentionCount();
         },
         /**
          * 加载默认注意事项内容，settings.js
@@ -41,52 +39,46 @@
          * 初始化窗口事件
          */
         initEvent : function() {
-            this.handleCountWordNumberEvent();
+        	this.initValidation();
+        	this.initClosenEvent();
             this.handleOkEvent();
         },
         /**
-         * 处理统计字数
+         * 初始化关闭事件，打开之前dialog
          */
-        handleCountWordNumberEvent : function() {
-            var dialog = this;
-            $(this.settings.attentionNote).off('keyup').on('keyup', function() {
-                dialog.updateAttentionCount();
-            });
-        },
-        /**
-         * 更新文本框字数提示信息
-         */
-        updateAttentionCount : function() {
-            var dialog = this;
-            var count = $(dialog.settings.attentionNote).val().length;
-            $(dialog.settings.attentionCount).text(count);
-        },
-        /**
-         * 处理表单验证
-         * @returns {*}
-         */
-        handleValidate : function() {
-            var dialog = this;
-            return $(dialog.settings.ui).find(dialog.settings.form).validate({
-                errorPlacement: function(error, element) {
-                    $(element).parents('.form-group').find('span.errSpan').text($(error)[0].innerHTML);
-                    $(element).parents('.form-group').addClass('has-error');
-                },
-                success : function(labels) {
-                    $(labels[0].control).parents('.form-group').removeClass('has-error');
+        initClosenEvent: function() {
+        	var dialog = this;
+        	$(this.settings.ui).on('hidden.bs.modal', function() {
+        		var preDialog = dialog.settings.preDialog;
+                if(preDialog) {
+                    preDialog.show();
                 }
-            }).form();
+        	});
         },
+        /**
+         * 初始化验证
+         */
+        initValidation: function() {
+        	$.uiwrapper.formValidator.validate(this.settings.form, {
+        		'attentionNote': {
+        			validators: {
+        				notEmpty: {
+        					message: '注意事项不能为空!'
+        				}
+        			}
+        		}
+        	});
+        },
+        
         /**
          * 处理确定按钮事件
          */
         handleOkEvent : function() {
             var dialog = this;
             $(this.settings.ui).find(this.settings.btns.ok).off('click').on('click', function() {
-                var valid = dialog.handleValidate();
-                if(valid) {
-                    dialog.updateAttentionNote();
-                }
+            	if($.uiwrapper.formValidator.isFormValid(dialog.settings.form)) {
+            		dialog.updateAttentionNote();
+            	}
             });
         },
         /**
@@ -112,10 +104,6 @@
          */
         hide : function() {
             $(this.settings.ui).modal('hide');
-            var preDialog = this.settings.preDialog;
-            if(preDialog) {
-                preDialog.show();
-            }
         }
     }
 })(jQuery);

@@ -55,8 +55,7 @@
         	var $answerSheet = $.examPapers.settings.curSheet;
             this.settings.svg = $answerSheet.settings.svg;
             //获取题目的初始配置信息
-            var $anchorPoint = $.defaultSetting.anchorPoint;
-            this.settings.data.y = $anchorPoint.vPadding + $anchorPoint.height*2;
+            this.settings.data.y = $.defaultSetting.title.padding;
         },
         /**
          * 加载该控件

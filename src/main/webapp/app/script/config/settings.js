@@ -14,14 +14,21 @@
 		english: {name: '英语', value: 3},   // 英语
 		politics: {name: '政治', value: 4},  // 政治
 		history: {name: '历史', value: 5},   // 历史
-		physical: {name: '物理', value: 6},  // 物理
-		chemistry: {name: '化学', value: 7}  // 化学
+		geography: {name: '地理', value: 6}, //地理
+		physical: {name: '物理', value: 7},  // 物理
+		chemistry: {name: '化学', value: 8},  // 化学
+		biology: {name: '生物', value: 9},   //生物
 	};
 	
     $.settings = {
+		subject: {
+			curSubject: $.subject.basic,
+			num: 4 //四个矩形方格代表16科， 按照二进制顺序，从右到左为低到高
+		},
         baseInfo : {
-            attentionNote : '填涂时用 2B 铅笔将选项涂满涂黑。修改时用橡皮擦干净。' +
-                '请注意题号顺序。请保持答题卡整洁，不要折叠、乱作标记。'
+            attentionNote : '1.答题前，考生务必用黑色字迹签字笔填写字迹的准考证号、姓名、学校；再用2B铅笔吧对应准考证号码的标号涂黑，'
+            	+'使用其他笔填涂无效。|2.考生不得填涂缺考、违纪项，违者责任自负。|3.选择题必须用2B铅笔填涂,使用其他笔填涂无效，修改时要用橡皮擦干净；每题只能填涂一个答案，多填不得分。|'
+            	+'4.主观题必须用黑色字迹签字笔(0.5mm)在答题区域内作答，超出矩形框限定区域的答案无效。|5.保持答题卡的清洁和平整，不得折叠。'
         },
         footer : {
         	content: '请在每题规定的答题区域内作答，超出黑色矩形限定区域的答案无效'

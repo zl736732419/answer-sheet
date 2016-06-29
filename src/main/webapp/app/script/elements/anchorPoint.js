@@ -28,31 +28,30 @@
 			var setting = $.defaultSetting.anchorPoint;
 			var positions = []; //四个定位点位置坐标
 			
-			//左上角,左上角根据位置来区分页码，下一页是上一页位置+宽度
 			var leftUp = {
-				x:(setting.hPadding + setting.width*index),
-				y: setting.vPadding
+				x: setting.hPadding,
+				y: setting.vTopPadding
 			};
 			positions.push(leftUp);
 
 			//右上角
 			var rightUp = {
 				x: page.width - setting.hPadding - setting.width,
-				y: setting.vPadding
+				y: setting.vTopPadding
 			};
 			positions.push(rightUp);
 
 			//左下角
 			var leftBottom = {
 				x: setting.hPadding,
-				y: page.height - setting.vPadding - setting.height
+				y: page.height - setting.vBottomPadding - setting.height
 			};
 			positions.push(leftBottom);
 
 			//右下角
 			var rightBottom = {
 				x: page.width - setting.hPadding - setting.width,
-				y: page.height - setting.vPadding - setting.height
+				y: page.height - setting.vBottomPadding - setting.height
 			};
 			positions.push(rightBottom);
 
@@ -72,7 +71,7 @@
 			var rect = $.uiBuilder.drawRect(position.x, position.y, setting.width, setting.height, true, '#000');
 			var g = document.createElementNS(constant.SVG_NS, 'g');
 			$(g).addClass('anchorPoint');
-			$(g).attr('position', position);
+			$(g).data('position', position);
 			g.appendChild(rect);
 			svg.appendChild(g);
 		}

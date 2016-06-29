@@ -18,10 +18,6 @@
         },
         columns : [2,3], //a3题卡有2/3栏之分
         column: 3,
-        content : {
-            width : 2874, //内容宽度
-            height: 1905 //内容高度
-        },
         grid : { //填涂方格大小
             width: 25,
             height: 12
