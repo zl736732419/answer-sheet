@@ -7,6 +7,7 @@
         settings: {
             uuid: null,
             svg: null,
+            type: $.elementType.subject,
             element: null,
             grid : { //方格大小
                 width : 0,
@@ -105,6 +106,17 @@
             
             this.initSize();
         },
+        initSize: function() {
+        	var g = this.settings.g;
+            //记录元素最初的宽高
+            var box = g.getBBox();
+            this.settings.resize.size = {
+                width: box.width,
+                height: box.height
+            };
+
+            this.settings.resize.curSize = $.extend(true, {}, this.settings.resize.size);
+        },
         /**
          * 科目信息平移到指定的位置
          */
@@ -116,7 +128,6 @@
         		x: x,
         		y: y
         	};
-        	
         	$.elementDrag.updateGTranslateByPosition(this.settings.g, position);
         },
         /**
@@ -130,17 +141,6 @@
             var text = $.uiBuilder.drawText(textX, textY, '科目', this.settings.fontSize);
             containerG.appendChild(text);
             $.uiBuilder.bottomText(text);
-        },
-        initSize: function() {
-        	var g = this.settings.g;
-            //记录元素最初的宽高
-            var box = g.getBBox();
-            this.settings.resize.size = {
-                width: box.width,
-                height: box.height
-            };
-
-            this.settings.resize.curSize = $.extend(true, {}, this.settings.resize.size);
         },
         /**
          * 绘制一个矩形框，包含科目信息整体

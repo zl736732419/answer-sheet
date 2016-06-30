@@ -8,6 +8,7 @@
 	$.anchorPoint = {
 		settings: {
 			svg : null,
+			type: $.elementType.anchorPoint,
 			pointGs: [] //记录
 		},
 		newInstance: function() {

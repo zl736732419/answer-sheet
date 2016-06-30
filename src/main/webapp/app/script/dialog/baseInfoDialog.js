@@ -14,13 +14,6 @@
 				QR: 'qr'
 			},
             ui : '#baseInfoDialog',
-            userName : 'input[name=userName]',
-            school : 'input[name=school]',
-            clazzName : 'input[name=clazzName]',
-            filling : 'input[name=filling]', //正误填涂
-            subject: 'input[name=subject]',
-            pageNum: 'input[name=pageNum]',
-            absentAndBreach : 'input[name=absentAndBreach]',
             studentCode: 'input[name=studentCode]',
             attentionNote : 'input[name=attentionNote]',
             zkzhCountPanel: '.zkzhCountPanel',
@@ -90,19 +83,7 @@
                     toastr.warning('创建考生信息必须选择事项!');
                     return;
                 }
-//                var baseInfoElement = $.baseInfoElement.newInstance();
-//                baseInfoElement.loadElement(attentions);
-//                $answerSheet.settings.elements.push(baseInfoElement);
-//                if(dialog.settings.element) {
-//                    //编辑操作
-//                	$answerSheet.removeElement(dialog.settings.element);
-//                	var transform = $(dialog.settings.element.settings.editTarget).attr('transform');
-//                	$(baseInfoElement.settings.editTarget).attr('transform', transform);
-//                }
-                
                 dialog.renderBaseInfoElements(attentions);
-                
-                
                 dialog.hide();
             });
         },
@@ -128,7 +109,11 @@
         		$elements.push(studentInfoElement);
         	}
         	
-        	
+            if(_.indexOf(attentions, 'wrongFilling') != -1) { //正误填涂组件
+                var wrongFillingElement = $.wrongFillingElement.newInstance();
+                wrongFillingElement.loadElement();
+                $elements.push(studentInfoElement);
+            }
         	
         	
         },

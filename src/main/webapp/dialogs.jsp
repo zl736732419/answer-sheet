@@ -124,7 +124,7 @@
 							  	<div class="checkbox">
 							  		<div class="checkbox">
 		                                <label>
-		                                    <input type="checkbox" name="filling" value="filling" readonly="readonly"> 正误填涂
+		                                    <input type="checkbox" name="wrongFilling" value="wrongFilling" readonly="readonly"> 正误填涂
 		                                </label>
 		                            </div>
 							  	</div>

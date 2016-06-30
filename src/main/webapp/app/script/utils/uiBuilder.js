@@ -232,19 +232,19 @@
             var tspan = null;
             var index = 0;
             var tspanHeight = 0;
+            var curY = null;
             for(var i = 0; i < text.length; i++) {
-                label += text[i];
                 if(i % num == 0 && i != 0) {
                     tspan = document.createElementNS(constant.SVG_NS, "tspan");
                     	
                     if(index != 0) {
-                    	y = y + ((tspanHeight + padding) * index++);
+                    	curY = y + ((tspanHeight + padding) * index++);
                     }else {
                     	index++;
                     }
                     
                     $(tspan).attr('x', x)
-                        .attr('y', y);
+                        .attr('y', curY);
                     tspan.textContent = label;
                     textUI.appendChild(tspan);
                     if(tspanHeight == 0) {
@@ -252,6 +252,7 @@
                 	}
                     label = '';
                 }
+                label += text[i];
             }
 
             if(label != '') {
@@ -271,6 +272,7 @@
          * @param containerWidth 文本容器的宽度
          */
         centerText : function(text, x, containerWidth) {
+        	var $tspan = $(text).find('tspan');
         	var box = text.getBBox();
             //水平居中
     		var newX = (containerWidth - box.width) / 2;
@@ -279,18 +281,31 @@
             var by = box.y;
             var y = $(text).attr('y');
             var dy = y - (by + box.height / 2);
-            $(text).attr('dy', dy);
+            if($tspan.length == 0) {
+                $(text).attr('dy', dy);
+        	}else {
+        		for(var i = 0; i < $tspan.length; i++) {
+        			$($tspan[i]).attr('dy', dy);
+        		}
+        	}
         },
         /**
          * 将text顶点移动到y位置，在对text定位到(x,y)时，只是text的基线在y并不是顶点在y
          * @param text
          */
         bottomText: function(text) {
+        	var $tspan = $(text).find('tspan');
         	var box = text.getBBox();
         	var by = box.y;
         	var y = $(text).attr('y');
-            var dy = y - by;
-            $(text).attr('dy', dy);
+        	var dy = y - by;
+        	if($tspan.length == 0) {
+                $(text).attr('dy', dy);
+        	}else {
+        		for(var i = 0; i < $tspan.length; i++) {
+        			$($tspan[i]).attr('dy', dy);
+        		}
+        	}
         }
     }
 })(jQuery);

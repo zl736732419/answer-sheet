@@ -7,6 +7,7 @@
  * 针对各个控件的通用设置
  */
 (function($) {
+	"use strict";
 	//各科配置
 	$.subject = {
 		basic : {name:'语文', value:1},    // 语文
@@ -18,6 +19,15 @@
 		physical: {name: '物理', value: 7},  // 物理
 		chemistry: {name: '化学', value: 8},  // 化学
 		biology: {name: '生物', value: 9},   //生物
+	};
+	
+	//控件类型
+	$.elementType = {
+		anchorPoint : 1,
+		subject: 2,
+		studentInfo: 3,
+		wrongFilling: 4
+		//TODO
 	};
 	
     $.settings = {

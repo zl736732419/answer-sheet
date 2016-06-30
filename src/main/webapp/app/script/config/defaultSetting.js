@@ -48,8 +48,12 @@
         },
         studentInfo: {
         	hPadding: 20, //横向偏移
-            vPadding: 10, //纵向偏移 这里只是相对于定位点而言，需要再根据定位点位置计算，settingDialog.js中计算
-            paddingTop: 5 //离上一个元素的外间距
+            vPadding: 10 //纵向偏移 这里只是相对于定位点而言，需要再根据定位点位置计算，settingDialog.js中计算
+        },
+        wrongFilling: {
+        	wordPadding: 5,
+        	hPadding: 20,
+        	vPadding: 10
         }
     };
 

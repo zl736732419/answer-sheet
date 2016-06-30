@@ -111,6 +111,7 @@
 			this.initContentParams();
 			this.initSubjectParams();
 			this.initStudentInfoParams();
+			this.initWrongFillingParams();
 		},
 		/**
 		 * 初始化内容宽度和高度
@@ -144,8 +145,31 @@
 			var studentInfo = $.defaultSetting.studentInfo;
 			var anchorPoint = $.defaultSetting.anchorPoint;
 			studentInfo.hPadding = anchorPoint.hPadding;
-			studentInfo.vPadding = subject.vPadding + subject.wordPadding * 2 
-			+ grid.height + studentInfo.paddingTop;
+			studentInfo.vPadding += subject.vPadding + subject.wordPadding * 2 
+			+ grid.height;
+		},
+		/**
+		 * 初始化正误填涂位置坐标
+		 */
+		initWrongFillingParams: function() {
+			var defaultSetting = $.defaultSetting;
+			var studentInfo = defaultSetting.studentInfo;
+			var wrongFilling = defaultSetting.wrongFilling;
+			var answerSheet = $.examPapers.settings.curSheet;
+
+			var element = null;
+			var height = 0;
+			for(var i = 0; i < answerSheet.settings.elements.length; i++) {
+				element = answerSheet.settings.elements[i];
+				if(element.settings.type == $.elementType.studentInfo) {
+					height = element.settings.items.length 
+						* $.studentInfoElement.settings.row.height;
+					break;
+				}
+			}
+			
+			wrongFilling.vPadding += (studentInfo.vPadding + height);
+			
 		},
 		/**
          * 显示窗口
@@ -159,6 +183,5 @@
         hide : function() {
             $(this.settings.ui).modal('hide');
         }
-			
 	};
 })(jQuery);
