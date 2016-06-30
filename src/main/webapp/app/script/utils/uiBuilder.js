@@ -24,6 +24,9 @@
                 .attr('height', height)
                 .attr('stroke-width', 1).attr('stroke', '#000');
                 if(fill) {
+                	if(fillColor == null || fillColor == undefined) {
+                		fillColor = '#000';
+                	}
                     $(rect).attr('fill', fillColor);
                 }else {
                     $(rect).attr('fill', 'none');
@@ -262,20 +265,31 @@
             return textUI;
         },
         /**
-         * 将准考证号标题水平垂直居中面板
+         * 将准考证号标题水平垂直居中面板,需要注意的一点是，要使用该方法需要先将text加入到svg中
          * @param text 要居中的文本
          * @param x 容器左上角x坐标
          * @param containerWidth 文本容器的宽度
          */
         centerText : function(text, x, containerWidth) {
+        	var box = text.getBBox();
             //水平居中
-            var box = text.getBBox();
-            var newX = (containerWidth - box.width) / 2;
-            $(text).attr('x', x + newX);
+    		var newX = (containerWidth - box.width) / 2;
+    		$(text).attr('x', x + newX);
             //垂直居中
             var by = box.y;
             var y = $(text).attr('y');
             var dy = y - (by + box.height / 2);
+            $(text).attr('dy', dy);
+        },
+        /**
+         * 将text顶点移动到y位置，在对text定位到(x,y)时，只是text的基线在y并不是顶点在y
+         * @param text
+         */
+        bottomText: function(text) {
+        	var box = text.getBBox();
+        	var by = box.y;
+        	var y = $(text).attr('y');
+            var dy = y - by;
             $(text).attr('dy', dy);
         }
     }

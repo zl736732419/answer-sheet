@@ -19,7 +19,8 @@
         },
         grid : { //填涂方格大小
             width: 12,
-            height: 5
+            height: 5,
+            padding: 7 // 3.2 + x = 5.08(mm)
         },
         title : { //答题卡标题控件
         	content: '',
@@ -42,7 +43,7 @@
         },
         subject: { //科目元素
             hPadding: 20, //横向偏移
-            vPadding: 10 //纵向偏移 这里只是相对于定位点而言，需要再根据定位点位置计算，settingDialog.js中计算
+            vPadding: 10, //纵向偏移 这里只是相对于定位点而言，需要再根据定位点位置计算，settingDialog.js中计算
         }
     };
 

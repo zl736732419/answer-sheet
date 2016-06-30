@@ -22,7 +22,7 @@
 	
     $.settings = {
 		subject: {
-			curSubject: $.subject.basic,
+			curSubject: $.subject.biology,
 			num: 4 //四个矩形方格代表16科， 按照二进制顺序，从右到左为低到高
 		},
         baseInfo : {

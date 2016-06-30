@@ -30,28 +30,36 @@
 			
 			var leftUp = {
 				x: setting.hPadding,
-				y: setting.vTopPadding
+				y: setting.vTopPadding,
+				width: setting.width,
+				height: setting.height
 			};
 			positions.push(leftUp);
 
 			//右上角
 			var rightUp = {
 				x: page.width - setting.hPadding - setting.width,
-				y: setting.vTopPadding
+				y: setting.vTopPadding,
+				width: setting.width,
+				height: setting.height
 			};
 			positions.push(rightUp);
 
 			//左下角
 			var leftBottom = {
 				x: setting.hPadding,
-				y: page.height - setting.vBottomPadding - setting.height
+				y: page.height - setting.vBottomPadding - setting.height,
+				width: setting.width,
+				height: setting.height
 			};
 			positions.push(leftBottom);
 
 			//右下角
 			var rightBottom = {
 				x: page.width - setting.hPadding - setting.width,
-				y: page.height - setting.vBottomPadding - setting.height
+				y: page.height - setting.vBottomPadding - setting.height,
+				width: setting.width,
+				height: setting.height
 			};
 			positions.push(rightBottom);
 
@@ -67,8 +75,7 @@
 			var constant = $.utils.settings.constant;
 			var svg = this.settings.svg;
 			var setting = $.defaultSetting.anchorPoint;
-
-			var rect = $.uiBuilder.drawRect(position.x, position.y, setting.width, setting.height, true, '#000');
+			var rect = $.uiBuilder.drawRect(position.x, position.y, position.width, position.height, true, '#000');
 			var g = document.createElementNS(constant.SVG_NS, 'g');
 			$(g).addClass('anchorPoint');
 			$(g).data('position', position);

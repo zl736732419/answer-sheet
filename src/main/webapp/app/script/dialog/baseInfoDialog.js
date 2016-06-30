@@ -114,8 +114,11 @@
         	if(_.indexOf(attentions, 'subject') != -1) { //科目信息
         		var subjectElement = $.subjectElement.newInstance();
                 subjectElement.loadElement();
+                var $answerSheet = $.examPapers.settings.curSheet;
+                $answerSheet.settings.elements.push(subjectElement);
         	}
         	
+        	//绘制学生基本信息
         	
         	
         },
