@@ -62,6 +62,7 @@
 <!--加载元素控件-->
 <script type="text/javascript" src="app/script/elements/titleElement.js"></script>
 <script type="text/javascript" src="app/script/elements/subjectElement.js"></script>
+<script type="text/javascript" src="app/script/elements/studentInfoElement.js"></script>
 <script type="text/javascript" src="app/script/elements/baseInfoElement.js"></script>
 
 <!--加载元素编辑控件-->

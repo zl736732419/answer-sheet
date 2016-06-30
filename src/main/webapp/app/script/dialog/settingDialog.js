@@ -110,6 +110,7 @@
 		initSettingParams: function() {
 			this.initContentParams();
 			this.initSubjectParams();
+			this.initStudentInfoParams();
 		},
 		/**
 		 * 初始化内容宽度和高度
@@ -132,6 +133,19 @@
 			var anchorPoint = $.defaultSetting.anchorPoint;
 			var subject = $.defaultSetting.subject;
 			subject.vPadding += (anchorPoint.vTopPadding + anchorPoint.height);
+			subject.hPadding = anchorPoint.hPadding;
+		},
+		/**
+		 * 初始化学生信息栏位置坐标
+		 */
+		initStudentInfoParams : function() {
+			var subject = $.defaultSetting.subject;
+			var grid = $.defaultSetting.grid;
+			var studentInfo = $.defaultSetting.studentInfo;
+			var anchorPoint = $.defaultSetting.anchorPoint;
+			studentInfo.hPadding = anchorPoint.hPadding;
+			studentInfo.vPadding = subject.vPadding + subject.wordPadding * 2 
+			+ grid.height + studentInfo.paddingTop;
 		},
 		/**
          * 显示窗口

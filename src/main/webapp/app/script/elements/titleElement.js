@@ -210,15 +210,15 @@
             this.settings.components.select.enable(this);
 
             //不允许拖动
-            /*if(this.settings.components.drag == null) {
+            if(this.settings.components.drag == null) {
                 this.settings.components.drag = $.elementDrag.newInstance();
             }
-            this.settings.components.drag.enable(this);*/
+            this.settings.components.drag.enable(this);
 
-            /*if(this.settings.components.resize == null) {
+            if(this.settings.components.resize == null) {
                 this.settings.components.resize = $.elementResize.newInstance();
             }
-            this.settings.components.resize.enable(this);*/
+            this.settings.components.resize.enable(this);
 
             //右键菜单
             if(this.settings.components.contextMenu == null) {

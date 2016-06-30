@@ -20,30 +20,31 @@
             if(!elementObj) {
                 throw new Error('错误，当前要选中的目标元素为空!');
             }
-            this.drag(elementObj.settings.editTarget);
+            this.drag(elementObj);
         },
-        drag : function(element) {
-            var g = $(element).parent()[0];
+        drag : function(elementObj) {
+            var g = elementObj.settings.g;
             var select = g.obj.settings.components.select; //g.obj
+            var editTarget = g.obj.settings.editTarget;
             var drag = this;
-            $(element).on('mousedown', function(e) {
+            $(editTarget).on('mousedown', function(e) {
                 drag.preventBuddle(e);
-                select.unSelectElement(element);
+                select.unSelectElement(g);
                 var startXY = drag.getXY(e);
-                drag.changeMouseToDragStyle(element);
+                drag.changeMouseToDragStyle(g);
 
                 $(document).on('mousemove', function(e) { //拖动时移动
                     drag.preventBuddle(e);
                     var targetXY = drag.getXY(e);
                     var distanceXY = drag.getDistanceXY(targetXY, startXY);
-                    var translateStr = drag.updateGTranslate(g, distanceXY);
+                    var translateStr = drag.getUpdateGTranslate(g, distanceXY);
                     $(g).attr('transform', translateStr);
                     startXY = $.extend(true, {}, targetXY);
                 });
 
                 $(document).on('mouseup',function(e) {
                     drag.preventBuddle(e);
-                    drag.changeMouseToDefaultStyle(element);
+                    drag.changeMouseToDefaultStyle(g);
                     $(document).off('mousemove');
                     $(document).off('mouseup');
 
@@ -56,19 +57,18 @@
          * 停止移动后将g上的transform计算到元素的坐标中，translate值重新设置为0,0
          * @Deprecated
          */
-        updateElementPosition : function(element) {
+        updateElementPosition : function(g) {
             var drag = this;
-            var g = $(element).parent()[0];
             var elementObj = g.obj;
             var xy = this.getTranslateXY(g);
 
-            elementObj.updatePosition(xy.x, xy.y);
+//            elementObj.updatePosition(xy.x, xy.y);
             var transform = $(g).attr('transform');
             if(transform == undefined || $.trim(transform) == '') {
                 transform = 'translate(0,0)';
             }else {
                 var distanceXY = {dx: 0, dy:0};
-                transform = drag.updateGTranslate(g, distanceXY);
+                transform = drag.getUpdateGTranslate(g, distanceXY);
             }
 
             $(g).attr('transform', transform);
@@ -90,7 +90,7 @@
         /**
          * 获取拖动点更新的transform属性值
          */
-        updateGTranslate : function(g, distanceXY) {
+        getUpdateGTranslate : function(g, distanceXY) {
             var str = this.getTranslateStr(g);
             var xy = this.getTranslateXY(str);
             x = xy.x + distanceXY.dx;
@@ -105,6 +105,23 @@
             }
 
             return _.trim(transformStr);
+        },
+        /**
+         * 根据指定的位置更新translate
+         * @param g
+         * @param position
+         */
+        updateGTranslateByPosition: function(g, position) {
+        	var translateStr = 'translate(' + position.x + ',' + position.y + ')';
+            var transformStr = $(g).attr('transform');
+        	if(transformStr.indexOf('translate') == -1) {
+                transformStr += (' ' + translateStr);
+            }else {
+                var reg = /translate\(([0-9,. -]+)\)/g;
+                transformStr = _.replace(transformStr, reg, translateStr);
+            }
+        	
+        	$(g).attr('transform', _.trim(transformStr));
         },
         //获取translate字符串
         getTranslateStr : function(g) {
@@ -140,13 +157,13 @@
                 e.cancelBubble = true;
             }
         },
-        changeMouseToDragStyle : function(element) { //元素拖动时改变鼠标样式为拖动样式
-            $(element).css({
+        changeMouseToDragStyle : function(g) { //元素拖动时改变鼠标样式为拖动样式
+            $(g).css({
                 cursor : 'move'
             });
         },
-        changeMouseToDefaultStyle : function(element) { //元素停止拖动后改变鼠标样式为默认样式
-            $(element).css({
+        changeMouseToDefaultStyle : function(g) { //元素停止拖动后改变鼠标样式为默认样式
+            $(g).css({
                 cursor : 'default'
             });
         }

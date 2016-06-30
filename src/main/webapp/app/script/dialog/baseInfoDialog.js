@@ -7,7 +7,6 @@
  */
 (function($) {
     $.baseInfoDialog = {
-    	
         settings : {
         	constants: {
 				ZKZH: "zkzh",
@@ -111,14 +110,25 @@
          * 加载基本信息中存在的元素组件
          */
         renderBaseInfoElements: function(attentions) {
+        	var $answerSheet = $.examPapers.settings.curSheet;
+        	var $elements = $answerSheet.settings.elements;
         	if(_.indexOf(attentions, 'subject') != -1) { //科目信息
         		var subjectElement = $.subjectElement.newInstance();
                 subjectElement.loadElement();
-                var $answerSheet = $.examPapers.settings.curSheet;
-                $answerSheet.settings.elements.push(subjectElement);
+                $elements.push(subjectElement);
         	}
         	
         	//绘制学生基本信息
+        	var items = _.intersection(attentions, $.studentInfoElement.settings.elements);
+        	if(items.length == 0) {
+        		toastr.warning('学生基本信息栏必须选中一项！');
+        	}else {
+        		var studentInfoElement = $.studentInfoElement.newInstance();
+        		studentInfoElement.loadElement(items);
+        		$elements.push(studentInfoElement);
+        	}
+        	
+        	
         	
         	
         },

@@ -25,21 +25,19 @@
          * @param elementObj
          */
         resize: function(elementObj) {
-            //TODO 需要修改elementObj
-
-            this.drawEightPoints(elementObj.settings.editTarget);
+            this.drawEightPoints(elementObj);
             this.initEvent(elementObj);
         },
         /**
          * 为resize控件添加事件响应
-         * @param element
+         * @param elementObj
          */
         initEvent : function(elementObj) {
             this.initPointDragEvent(elementObj);
         },
         /**
          * 8个助拖点拖动事件
-         * @param element
+         * @param elementObj
          */
         initPointDragEvent: function(elementObj) {
             var resize = this;
@@ -226,7 +224,7 @@
             var resize = this;
             var g = elementObj.settings.g;
 
-            var transformStr = resize.updateGTranslate(g, distanceXY);
+            var transformStr = resize.getUpdateGTranslate(g, distanceXY);
             $(g).attr('transform', transformStr);
 
             var scaleXY = resize.getScaleXY(elementObj, curSize, distanceXY);
@@ -273,7 +271,7 @@
         /**
          * 获取拖动点更新的transform属性值
          */
-        updateGTranslate : function(g, distanceXY) {
+        getUpdateGTranslate : function(g, distanceXY) {
             var str = this.getTranslateStr(g);
             var xy = this.getTranslateXY(str);
             x = xy.x + distanceXY.dx;
@@ -336,8 +334,8 @@
         /**
          * 绘制八个助拖点，帮助用户拖动
          */
-        drawEightPoints : function(element) {
-            var parentG = $(element).parent()[0];
+        drawEightPoints : function(elementObj) {
+            var parentG = elementObj.settings.g;
             var constant = $.utils.settings.constant;
             var g = document.createElementNS(constant.SVG_NS, 'g');
             $(g).attr('transform', 'translate(0, 0)');
@@ -345,8 +343,8 @@
             this.settings.pointG = g;
 
             parentG.appendChild(g);
-
-            var box = element.getBBox();
+            var editTarget = elementObj.settings.editTarget; 
+            var box = editTarget.getBBox();
             var r = 5;
             var cx = 0;
             var cy = 0;

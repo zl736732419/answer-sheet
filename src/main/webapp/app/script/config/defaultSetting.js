@@ -42,8 +42,14 @@
         	padding: 13
         },
         subject: { //科目元素
+        	wordPadding: 5, //文本与矩形框的偏移量 
             hPadding: 20, //横向偏移
             vPadding: 10, //纵向偏移 这里只是相对于定位点而言，需要再根据定位点位置计算，settingDialog.js中计算
+        },
+        studentInfo: {
+        	hPadding: 20, //横向偏移
+            vPadding: 10, //纵向偏移 这里只是相对于定位点而言，需要再根据定位点位置计算，settingDialog.js中计算
+            paddingTop: 5 //离上一个元素的外间距
         }
     };
 
