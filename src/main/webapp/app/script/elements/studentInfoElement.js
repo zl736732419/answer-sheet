@@ -12,7 +12,7 @@
                 index: 0, //记录当前绘制的字段索引，用于计算高度
                 leftPadding: 10, //左侧文本内间距
                 width : 0, //占1/3
-                height : 40
+                height : 60
             },
             padding: {
             	hPadding: 0,
@@ -24,6 +24,7 @@
             elements : [
             	'userName', 'school', 'clazzName'
             ],
+            fontSize: 25,
             resize: {//记录元素创建时的初始宽高，用于缩放组件进行缩放计算
                 size: { //记录最初大小
                     width:0,
@@ -160,7 +161,7 @@
             		row.width, row.height);
             g.appendChild(rect); //绘制分隔线
             var rectBox = rect.getBBox();
-            var textUI = $.uiBuilder.drawText(0, row.height*row.index, text);
+            var textUI = $.uiBuilder.drawText(0, row.height*row.index, text, this.settings.fontSize);
             g.appendChild(textUI);
             var textBox = textUI.getBBox();
             $(textUI).remove();
@@ -169,7 +170,7 @@
             var textX = row.leftPadding;
             var textY = rectBox.height*row.index 
             	+ (rectBox.height - textBox.height) / 2;
-            textUI = $.uiBuilder.drawText(textX, textY, text);
+            textUI = $.uiBuilder.drawText(textX, textY, text, this.settings.fontSize);
             g.appendChild(textUI);
             $.uiBuilder.bottomText(textUI);
             row.index++;

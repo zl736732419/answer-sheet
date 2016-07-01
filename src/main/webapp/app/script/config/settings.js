@@ -26,7 +26,9 @@
 		anchorPoint : 1,
 		subject: 2,
 		studentInfo: 3,
-		wrongFilling: 4
+		wrongFilling: 4,
+		absentBreach: 5,
+		attentionNote: 6
 		//TODO
 	};
 	

@@ -52,14 +52,38 @@
         	var $answerSheet = $.examPapers.settings.curSheet;
             this.settings.svg = $answerSheet.settings.svg;
             $.extend(this.settings.grid,$.defaultSetting.grid);
-            var content = $.defaultSetting.content;
             
             //初始化padding信息
-            $.settingDialog.initWrongFillingParams();
+            this.initWrongFillingParams();
             
+            var content = $.defaultSetting.content;
             this.settings.padding = $.defaultSetting.wrongFilling;
-            this.settings.width = content.width / 3 * (4/7) - this.settings.padding.wordPadding;
+            this.settings.width = content.width / 3 * (4/7) - this.settings.padding.wordPadding*2;
         },
+        /**
+		 * 初始化正误填涂位置坐标
+		 */
+		initWrongFillingParams: function() {
+			var defaultSetting = $.defaultSetting;
+			var studentInfo = defaultSetting.studentInfo;
+			var wrongFilling = defaultSetting.wrongFilling;
+			var anchorPoint = defaultSetting.anchorPoint;
+			var answerSheet = $.examPapers.settings.curSheet;
+
+			var element = null;
+			var height = 0;
+			for(var i = 0; i < answerSheet.settings.elements.length; i++) {
+				element = answerSheet.settings.elements[i];
+				if(element.settings.type == $.elementType.studentInfo) {
+					height = element.settings.items.length 
+						* element.settings.row.height;
+					break;
+				}
+			}
+			
+			wrongFilling.vPadding += (studentInfo.vPadding + height);
+			wrongFilling.hPadding = anchorPoint.hPadding;
+		},
         createElement: function(){
         	this.settings.element = this;
         	var constant = $.utils.settings.constant;
@@ -79,8 +103,8 @@
             this.drawWrongFilling(g, labelBox.height);
             
             this.initSize();
-            this.positionWrongFilling();
             this.drawRectPanel(g);
+            this.positionWrongFilling();
         },
         /**
          * 绘制填涂要求标题
@@ -95,7 +119,7 @@
         	
         	var str = "填涂要求";
         	var text = $.uiBuilder.drawMultiLineText(0, 0, str, 2, 
-        			18, 1, labelG);
+        			25, 1, labelG);
         	
         	var textBox = text.getBBox();
         	$(text).remove();
@@ -111,7 +135,7 @@
         	var labelX = (rectBox.width - textBox.width) / 2;
         	var labelY = (rectBox.height - textBox.height) / 2;
         	var text = $.uiBuilder.drawMultiLineText(labelX, labelY, str, 2, 
-        			18, 1, labelG);
+        			25, 1, labelG);
         	$.uiBuilder.bottomText(text);
         	
         	return rect;
@@ -130,11 +154,17 @@
         	var fillWidth = width * 3/4;
         	var fillX = width * 1/4;
         	var rect = $.uiBuilder.drawRect(fillX, 0, fillWidth, height, false);
-        	fillG.appendChild(rect);
-        	var fontSize = 15;
+        	parentG.appendChild(rect);
+        	var rectBox = rect.getBBox();
+        	var fontSize = 20;
+        	
         	this.drawRightFilling(fillX, fillWidth, fontSize, fillG);
         	this.drawErrorFilling(fillX, fillWidth, fontSize, fillG);
         	
+        	var fillBox = fillG.getBBox();
+        	
+        	var dy = (rectBox.height - fillBox.height) / 2;
+        	$(fillG).attr('transform', 'translate(0,' + dy + ')');
         },
         /**
          * 绘制正确填涂方式

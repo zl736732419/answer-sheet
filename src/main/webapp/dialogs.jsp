@@ -138,7 +138,7 @@
 							  	<div class="checkbox">
 							  		<div class="checkbox">
 		                                <label>
-		                                    <input type="checkbox" name="absentAndBreach" value="absent" readonly="readonly"> 缺考与违纪
+		                                    <input type="checkbox" name="absentAndBreach" value="absentAndBreach" readonly="readonly"> 缺考与违纪
 		                                </label>
 		                            </div>
 							  	</div>

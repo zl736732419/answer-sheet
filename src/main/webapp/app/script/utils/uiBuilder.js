@@ -13,24 +13,29 @@
          * @param y
          * @param width
          * @param height
-         * @param fill
+         * @param fill是否填充
+         * @param stroke 是否描边
          */
-        drawRect : function(x, y, width, height, fill, fillColor) {
+        drawRect : function(x, y, width, height, fill, fillColor, stroke) {
         	var constant = $.utils.settings.constant;
             var rect = document.createElementNS(constant.SVG_NS, "rect");
             $(rect).attr('x', x)
                 .attr('y', y)
                 .attr('width', width)
-                .attr('height', height)
-                .attr('stroke-width', 1).attr('stroke', '#000');
-                if(fill) {
-                	if(fillColor == null || fillColor == undefined) {
-                		fillColor = '#000';
-                	}
-                    $(rect).attr('fill', fillColor);
-                }else {
-                    $(rect).attr('fill', 'none');
-                }
+                .attr('height', height);
+            if(stroke == false) {
+            	$(rect).attr('stroke-width', 'none');
+            }else {
+            	$(rect).attr('stroke-width', 1).attr('stroke', '#000');
+            }
+            if(fill) {
+            	if(fillColor == null || fillColor == undefined) {
+            		fillColor = '#000';
+            	}
+                $(rect).attr('fill', fillColor);
+            }else {
+                $(rect).attr('fill', 'none');
+            }
 
             return rect;
         },
@@ -233,10 +238,11 @@
             var index = 0;
             var tspanHeight = 0;
             var curY = null;
+            var count = 0;//用于记录当前已经读取的文本个数，换行后重新计数
             for(var i = 0; i < text.length; i++) {
-                if(i % num == 0 && i != 0) {
-                    tspan = document.createElementNS(constant.SVG_NS, "tspan");
-                    	
+                if((count % num == 0 || text[i] == '|') && count != 0) {
+                	count = 0;
+                	tspan = document.createElementNS(constant.SVG_NS, "tspan");
                     if(index != 0) {
                     	curY = y + ((tspanHeight + padding) * index++);
                     }else {
@@ -244,7 +250,8 @@
                     }
                     
                     $(tspan).attr('x', x)
-                        .attr('y', curY);
+                        .attr('y', curY)
+                        .attr('font-size', fontSize);
                     tspan.textContent = label;
                     textUI.appendChild(tspan);
                     if(tspanHeight == 0) {
@@ -252,7 +259,10 @@
                 	}
                     label = '';
                 }
-                label += text[i];
+                if(text[i] != '|') {
+                	count++;
+                	label += text[i];
+                }
             }
 
             if(label != '') {
@@ -274,9 +284,12 @@
         centerText : function(text, x, containerWidth) {
         	var $tspan = $(text).find('tspan');
         	var box = text.getBBox();
-            //水平居中
-    		var newX = (containerWidth - box.width) / 2;
-    		$(text).attr('x', x + newX);
+        	if((x != null && x != undefined) 
+        			&& (containerWidth != null && containerWidth != undefined)) {
+	            //水平居中
+	    		var newX = (containerWidth - box.width) / 2;
+	    		$(text).attr('x', x + newX);
+        	}
             //垂直居中
             var by = box.y;
             var y = $(text).attr('y');
@@ -296,14 +309,16 @@
         bottomText: function(text, x, containerWidth) {
         	var $tspan = $(text).find('tspan');
         	var box = text.getBBox();
-        	if(x && containerWidth) {
+        	if((x != null && x != undefined) 
+        			&& (containerWidth != null && containerWidth != undefined)) {
         		//水平居中
         		var newX = (containerWidth - box.width) / 2;
         		$(text).attr('x', x + newX);
         	}
         	var by = box.y;
         	var y = $(text).attr('y');
-        	var dy = y - by;
+        	var interval = 0;
+        	var dy = y - by-3; //这里的3代表文本信息的内间距
         	if($tspan.length == 0) {
                 $(text).attr('dy', dy);
         	}else {

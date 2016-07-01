@@ -89,7 +89,9 @@
             };
             
             //如果是编辑就先删除再创建
-            $answerSheet.removeElement(this.settings.element);
+            if(element != null) {
+            	$answerSheet.removeElement(element);
+            }
             
             var titleElement = $.titleElement.newInstance();
             titleElement.loadElement(params);

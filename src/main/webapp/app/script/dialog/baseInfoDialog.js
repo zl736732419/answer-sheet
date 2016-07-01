@@ -112,9 +112,20 @@
             if(_.indexOf(attentions, 'wrongFilling') != -1) { //正误填涂组件
                 var wrongFillingElement = $.wrongFillingElement.newInstance();
                 wrongFillingElement.loadElement();
-                $elements.push(studentInfoElement);
+                $elements.push(wrongFillingElement);
             }
         	
+            if(_.indexOf(attentions, 'absentAndBreach') != -1) { //缺考与违纪
+                var absentBreachElement = $.absentBreachElement.newInstance();
+                absentBreachElement.loadElement();
+                $elements.push(absentBreachElement);
+            }
+            
+            if(_.indexOf(attentions, 'attentionNote') != -1) { //注意事项
+                var attentionNoteElement = $.attentionNoteElement.newInstance();
+                attentionNoteElement.loadElement();
+                $elements.push(attentionNoteElement);
+            }
         	
         },
         /**

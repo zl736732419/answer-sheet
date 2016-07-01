@@ -111,6 +111,7 @@
 			this.initContentParams();
 			this.initSubjectParams();
 			this.initStudentInfoParams();
+			this.initAttentionNoteParams();
 		},
 		/**
 		 * 初始化内容宽度和高度
@@ -145,29 +146,18 @@
 			var anchorPoint = $.defaultSetting.anchorPoint;
 			studentInfo.hPadding = anchorPoint.hPadding;
 			studentInfo.vPadding += subject.vPadding + subject.wordPadding * 2 
-			+ grid.height;
+				+ grid.height;
 		},
-		/**
-		 * 初始化正误填涂位置坐标
-		 */
-		initWrongFillingParams: function() {
+		initAttentionNoteParams: function() {
+			var grid = $.defaultSetting.grid;
 			var defaultSetting = $.defaultSetting;
-			var studentInfo = defaultSetting.studentInfo;
-			var wrongFilling = defaultSetting.wrongFilling;
-			var answerSheet = $.examPapers.settings.curSheet;
-
-			var element = null;
-			var height = 0;
-			for(var i = 0; i < answerSheet.settings.elements.length; i++) {
-				element = answerSheet.settings.elements[i];
-				if(element.settings.type == $.elementType.studentInfo) {
-					height = element.settings.items.length 
-						* element.settings.row.height;
-					break;
-				}
-			}
+			var subject = $.defaultSetting.subject;
+			var content = defaultSetting.content;
+			var attentionNote = defaultSetting.attentionNote;
 			
-			wrongFilling.vPadding += (studentInfo.vPadding + height);
+			attentionNote.hPadding += (content.width / 3 + attentionNote.innerPadding);
+			attentionNote.vPadding += (subject.vPadding + subject.wordPadding * 2 
+				+ grid.height);
 			
 		},
 		/**
