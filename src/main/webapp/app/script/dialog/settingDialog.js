@@ -111,7 +111,6 @@
 			this.initContentParams();
 			this.initSubjectParams();
 			this.initStudentInfoParams();
-			this.initWrongFillingParams();
 		},
 		/**
 		 * 初始化内容宽度和高度
@@ -163,7 +162,7 @@
 				element = answerSheet.settings.elements[i];
 				if(element.settings.type == $.elementType.studentInfo) {
 					height = element.settings.items.length 
-						* $.studentInfoElement.settings.row.height;
+						* element.settings.row.height;
 					break;
 				}
 			}

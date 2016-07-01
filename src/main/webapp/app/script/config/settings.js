@@ -18,7 +18,7 @@
 		geography: {name: '地理', value: 6}, //地理
 		physical: {name: '物理', value: 7},  // 物理
 		chemistry: {name: '化学', value: 8},  // 化学
-		biology: {name: '生物', value: 9},   //生物
+		biology: {name: '生物', value: 15},   //生物
 	};
 	
 	//控件类型

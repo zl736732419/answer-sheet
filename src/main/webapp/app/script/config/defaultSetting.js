@@ -7,8 +7,8 @@
 (function($) {
     $.defaultSetting = {
         page : { // 答题卡页面信息
-        	width: 794, // 答题卡纸张宽度 
-            height: 1123,  // 答题卡纸张高度
+        	width: 0, // 答题卡纸张宽度 
+            height: 0,  // 答题卡纸张高度
             pageNum: 1 // 答题卡共几页(一张两面算两页)
         },
         content : {

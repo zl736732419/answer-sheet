@@ -150,7 +150,7 @@
         	var constant = $.utils.settings.constant;
         	var padding = this.settings.padding;
         	var grid = $.defaultSetting.grid;
-        	var width = box.width + (grid.padding+grid.width)*extra.num + padding.wordPadding; 
+        	var width = box.width + padding.wordPadding*2 + (grid.padding+grid.width)*extra.num + padding.wordPadding; 
         	var height = grid.height + padding.wordPadding*2; 
         	var position = {
         		x: padding.hPadding,
@@ -175,7 +175,7 @@
         	var rect = null;
         	for(var i = 0; i < extra.num; i++) {
         		position = {
-            		x: textBox.width + padding.wordPadding*2 + (textBox.width + grid.padding) * i,
+            		x: textBox.width + padding.wordPadding*2 + (grid.width + grid.padding) * i,
             		y: (rectBox.height - grid.height) / 2,
             		width: grid.width,
             		height: grid.height

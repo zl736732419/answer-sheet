@@ -35,7 +35,7 @@
             return rect;
         },
         //绘制矩形框，其中包含居中的文本
-        drawRectAndCenterText : function(x, y, width, height, text, parentG) {
+        drawRectAndCenterText : function(x, y, width, height, text, fontSize,parentG) {
         	var constant = $.utils.settings.constant;
             var g = document.createElementNS(constant.SVG_NS, 'g');
             parentG.appendChild(g);
@@ -43,7 +43,7 @@
             var rect = this.drawRect(x, y, width, height);
             g.appendChild(rect);
             //绘制文本
-            var textLabel = this.drawText(x, (y + height / 2), text);
+            var textLabel = this.drawText(x, (y + height / 2), text, fontSize);
             g.appendChild(textLabel);
             this.centerText(textLabel, x, width);
             return g;
@@ -293,9 +293,14 @@
          * 将text顶点移动到y位置，在对text定位到(x,y)时，只是text的基线在y并不是顶点在y
          * @param text
          */
-        bottomText: function(text) {
+        bottomText: function(text, x, containerWidth) {
         	var $tspan = $(text).find('tspan');
         	var box = text.getBBox();
+        	if(x && containerWidth) {
+        		//水平居中
+        		var newX = (containerWidth - box.width) / 2;
+        		$(text).attr('x', x + newX);
+        	}
         	var by = box.y;
         	var y = $(text).attr('y');
         	var dy = y - by;
@@ -306,6 +311,21 @@
         			$($tspan[i]).attr('dy', dy);
         		}
         	}
+        },
+        /**
+         * 获取指定大小的文本box
+         * @param str
+         * @param fontSize
+         * @param parentG
+         * @returns
+         */
+        getTextBBox: function(str, fontSize, parentG) {
+        	var text = this.drawText(0, 0, str, fontSize);
+        	parentG.appendChild(text);
+        	var textBox = text.getBBox();
+        	$(text).remove();
+        	
+        	return textBox;
         }
     }
 })(jQuery);

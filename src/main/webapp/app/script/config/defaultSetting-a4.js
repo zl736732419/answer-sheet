@@ -12,13 +12,13 @@
 (function($) {
     $.defaultSettingA4 = {
         page : { // 答题卡页面信息
-            width: 794, // 答题卡纸张宽度
-            height: 1123,  // 答题卡纸张高度
+            width: 1487, // 答题卡纸张宽度
+            height: 2105,  // 答题卡纸张高度
             pageNum: 2 // 答题卡共几页(一张两面算两页)
         },
         grid : { //填涂方格大小
-            width: 25,
-            height: 12
+            width: 12,
+            height: 5
         },
         title : { //答题卡标题控件
             y: 150 //标题到顶部距离
