@@ -21,7 +21,7 @@
             	hPadding: 0,
             	vPadding: 0
             },
-            fontSize: 18,
+            fontSize: 15,
             width: null, //当前组件所占宽度为studentInfo的4/7
             height: null, //通过填涂要求label计算
             resize: {//记录元素创建时的初始宽高，用于缩放组件进行缩放计算
