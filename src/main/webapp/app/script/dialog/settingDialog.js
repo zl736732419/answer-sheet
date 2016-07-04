@@ -9,6 +9,7 @@
 			ui : '#settingDialog',
 			form: '#settingForm',
 			pageNum: '#pageNum',
+			printType: 'input[name=printType]',
 			sheetType: '#sheetType',
 			a3Column: 'input[name=a3Column]',
 			a3Columns: '.a3Columns',
@@ -54,6 +55,11 @@
 						}
 						
 					}
+				},
+				'printType': {
+					notEmpty: {
+						message: '题卡打印类型不能为空!'
+					}
 				}
 			});
 		},
@@ -96,8 +102,8 @@
 
 			var pageNum = Number($(dialog.settings.form).find(dialog.settings.pageNum).val());
 			$.defaultSetting.page.pageNum = pageNum;
-			for(var i = 0; i < $.defaultSetting.page.pageNum; i++) {
-				$.examPapers.createNewAnswerSheet();
+			for(var i = 1; i <= $.defaultSetting.page.pageNum; i++) {
+				$.examPapers.createNewAnswerSheet(i);
 			}
 			
 			dialog.initSettingParams();
@@ -108,10 +114,19 @@
 		 * 初始化setting中的一些参数信息
 		 */
 		initSettingParams: function() {
+			this.initPrintType();
 			this.initContentParams();
 			this.initSubjectParams();
 			this.initStudentInfoParams();
 			this.initAttentionNoteParams();
+		},
+		/**
+		 * 缓存当前打印类型
+		 */
+		initPrintType: function() {
+			var printType = $(this.settings.printType).val();
+			$.defaultSetting.page.printType = printType;
+			
 		},
 		/**
 		 * 初始化内容宽度和高度

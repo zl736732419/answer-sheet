@@ -9,7 +9,8 @@
         page : { // 答题卡页面信息
         	width: 0, // 答题卡纸张宽度 
             height: 0,  // 答题卡纸张高度
-            pageNum: 1 // 答题卡共几页(一张两面算两页)
+            pageNum: 1, // 答题卡共几页
+            printType: 1 //当前打印类型
         },
         content : {
             width : null, //内容宽度 在
@@ -30,7 +31,7 @@
         	content: $.settings.footer.content,
         },
         anchorPoint: { //边界点
-        	hPadding: 20, //水平偏移
+        	hPadding: 20, //水平相对偏移
         	vTopPadding: 120, //垂直顶部偏移
         	vBottomPadding: 40, //垂直底部偏移
         	width: 39, 
@@ -63,7 +64,8 @@
         attentionNote: {
         	innerPadding: 10,
         	hPadding: 20, //外边框间距
-        	vPadding: 10
+        	vPadding: 10,
+        	textPadding: 5
         }
     };
 

@@ -11,12 +11,12 @@
             element: null,
             editTarget: null,
             g: null,
-            fontSize: 10,
+            fontSize: 15,
             padding: {
             	innerPadding: 10,
             	hPadding: 0,
             	vPadding: 0,
-            	textPadding: 10 //每行文本的间距
+            	textPadding: 0 //每行文本的间距
             },
             width: null, //当前组件所占宽度content / 3 - padding.innerPadding*2
             height: null, //通过填涂要求label计算

@@ -11,6 +11,7 @@
             subject: $.subject.basic, //默认是语文
             ui : '.answerSheetSvg',
             sheetDiv: null,
+            pageNum: 1, //默认题卡为第一页
             index: 0,//当前题卡所在索引
             svg : null, //通过ui实例化的svg对象,为了预览方便，后续预览操作直接将svg作为参数传递过来
             defaultSetting: null,
