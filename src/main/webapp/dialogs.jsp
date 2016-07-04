@@ -36,6 +36,17 @@
                             <input type="text" id="pageNum" name="pageNum" class="form-control required" value="1" placeholder="请输入字号">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="printType" class="col-sm-2 control-label">打印类型</label>
+                        <div class="col-sm-6">
+                            <label>
+                        		<input type="radio" name="printType" class="printType" value="1" checked>单面
+                        	</label>
+                        	<label>
+                        		<input type="radio" name="printType" class="printType" value="2">双面
+                        	</label>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">

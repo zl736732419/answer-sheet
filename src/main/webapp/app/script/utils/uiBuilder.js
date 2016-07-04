@@ -213,13 +213,13 @@
          * @param g 容器g
          */
         drawMultiLineText : function(x, y, text, padding, fontSize, num, parentG) {
-            if(!padding) {
+            if(padding == null || padding == undefined) {
                 padding = 15;
             }
-            if(!fontSize) {
+            if(fontSize == null || fontSize == undefined) {
             	fontSize = 15;
             }
-            if(!num) {
+            if(num == null || num == undefined) {
                 num = 17;
             }
             var constant = $.utils.settings.constant;
